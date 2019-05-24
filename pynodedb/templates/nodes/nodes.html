@@ -1,0 +1,38 @@
+{% extends('layouts/default.html') %}
+
+{% block content %}
+<h2>All Nodes</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Suburb</th>
+        <th>Manager</th>
+        <th>Status</th>
+        <th>Name</th>
+        <th>Region</th>
+        <th>Zone</th>
+        <th>Lat</th>
+        <th>Lng</th>
+        <th>Elevation</th>
+        <th>Antenna Height</th>
+        <th>BGP AS</th>
+    </tr>
+{% for node in nodes %}
+    <tr>
+        <td><a href="{{url_for('nodes.view_node', id=node.id)}}">{{node.id}}</a></td>
+        <td>{{node.suburb.name}}</td>
+        <td>{{node.user.name}}</td>
+        <td>{{node.status.name}}</td>
+        <td><a href="{{url_for('nodes.view_node', id=node.id)}}">{{node.name}}</a></td>
+        <td>{{node.region}}</td>
+        <td>{{node.zone}}</td>
+        <td>{{node.lat}}</td>
+        <td>{{node.lng}}</td>
+        <td>{{node.elevation}}</td>
+        <td>{{node.antenna_height}}</td>
+        <td>{{node.bgp_as}}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}

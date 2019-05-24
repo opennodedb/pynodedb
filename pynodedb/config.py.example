@@ -1,0 +1,13 @@
+# Flask Framework Config
+DEBUG = False
+SECRET_KEY = 'Hack Me Please'
+
+# pynodedb App Config
+SITENAME = 'pynodedb'
+
+# Primary Database Config
+DB_DRIVER = 'mysql'
+DB_HOST = 'localhost'
+DB_DATABASE = 'nodedb'
+DB_USERNAME = 'nodedb'
+DB_PASSWORD = 'password'

@@ -1,0 +1,3 @@
+global-exclude *.pyc
+graft pynodedb/static
+graft pynodedb/templates
