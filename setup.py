@@ -5,6 +5,8 @@ from setuptools import setup, find_packages
 requires = [
     'flask',
     'flask_sqlalchemy',
+    'flask-login',
+    'authlib',
     'pymysql',
     'waitress',
 ]

@@ -11,3 +11,7 @@ DB_HOST = 'localhost'
 DB_DATABASE = 'nodedb'
 DB_USERNAME = 'nodedb'
 DB_PASSWORD = 'password'
+
+# Air-Stream OAuth
+OAUTH_CLIENT_ID = 0
+OAUTH_CLIENT_SECRET = 'secret key'

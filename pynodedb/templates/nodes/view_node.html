@@ -3,13 +3,13 @@
 {% block content %}
 <h2>View Node</h2>
 
-<p><a href="{{url_for('nodes.node_list')}}">All Nodes</a></p>
+<p><a href="{{url_for('nodes.list')}}">All Nodes</a></p>
 
 <h3>{{node.name}}</h3>
 <table>
     <tr>
         <td><b>ID</b></td>
-        <td><a href="{{url_for('nodes.view_node', id=node.id)}}">{{node.id}}</a></td>
+        <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.id}}</a></td>
     </tr>
     <tr>
         <td><b>Suburb</b></td>
@@ -25,7 +25,7 @@
     </tr>
     <tr>
         <td><b>name</b></td>
-        <td><a href="{{url_for('nodes.view_node', id=node.id)}}">{{node.name}}</a></td>
+        <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.name}}</a></td>
     </tr>
     <tr>
         <td><b>Region</b></td>
