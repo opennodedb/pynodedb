@@ -1,0 +1,88 @@
+{% extends('layouts/default.html') %}
+
+{% block script %}
+<script type="text/javascript" src="{{url_for('static', filename='js/nodes/view.js')}}"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{config.GOOGLE_MAPS_API_KEY}}&callback=initMap"
+  type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+<h2>{{node.name}}</h2>
+<div class="row">
+    <div class="col-sm-6">
+        <table class="table">
+            <tr>
+                <td><b>ID</b></td>
+                <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.id}}</a></td>
+            </tr>
+            <tr>
+                <td><b>Suburb</b></td>
+                <td>{{node.suburb.name}}</td>
+            </tr>
+            <tr>
+                <td><b>Manager</b></td>
+                <td>{{node.user.name}}</td>
+            </tr>
+            <tr>
+                <td><b>Status</b></td>
+                <td>{{node.status.name}}</td>
+            </tr>
+            <tr>
+                <td><b>name</b></td>
+                <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.name}}</a></td>
+            </tr>
+            <tr>
+                <td><b>Region</b></td>
+                <td>{{node.region}}</td>
+            </tr>
+            <tr>
+                <td><b>Zone</b></td>
+                <td>{{node.zone}}</td>
+            </tr>
+            <tr>
+                <td><b>Lat</b></td>
+                <td id="node_lat">{{node.lat}}</td>
+            </tr>
+            <tr>
+                <td><b>Lng</b></td>
+                <td id="node_lng">{{node.lng}}</td>
+            </tr>
+            <tr>
+                <td><b>Elevation</b></td>
+                <td>{{node.elevation}}</td>
+            </tr>
+            <tr>
+                <td><b>Antenna Height</b></td>
+                <td>{{node.antenna_height}}</td>
+            </tr>
+            <tr>
+                <td><b>BGP AS</b></td>
+                <td>{{node.bgp_as}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-sm-6">
+        <div id="map" style="height: 444px; width: 100%;"></div>
+    </div>
+</div>
+<div class="row">
+    <h3>Links</h3>
+    <ul>
+    {% for link in node.links %}
+        <li>{{link.name}}</li>
+    {% endfor %}
+    </ul>
+
+    <h3>Subnets</h3>
+    <ul>
+    {% for subnet in node.subnets %}
+        <li>{{(subnet.addr|ipv4address|string + '/' + subnet.mask|string)|ipv4network}}</li>
+        <ul>
+    {% for host in subnet.hosts %}
+            <li>{{host.addr|ipv4address}}: {{host.name}}</li>
+    {% endfor %}
+        </ul>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

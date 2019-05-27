@@ -4,6 +4,7 @@ SECRET_KEY = 'Hack Me Please'
 
 # pynodedb App Config
 SITENAME = 'pynodedb'
+GOOGLE_MAPS_API_KEY='api key'
 
 # Primary Database Config
 DB_DRIVER = 'mysql'

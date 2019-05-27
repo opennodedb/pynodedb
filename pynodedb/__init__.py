@@ -32,6 +32,7 @@ def create_app(test_config=None):
         OAUTH_AUTHORIZE_URL='https://members.air-stream.org/oauth/authorize',
         OAUTH_API_BASE_URL='https://members.air-stream.org/api/',
         USE_SESSION_FOR_NEXT=True,
+        GOOGLE_MAPS_API_KEY=None,
     )
 
     # Load config file, if it exists

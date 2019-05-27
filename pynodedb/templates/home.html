@@ -1,15 +1,11 @@
 {% extends 'layouts/default.html' %}
 
 {% block content %}
-<h2>Home</h2>
-{% if current_user.is_authenticated %}
-<p>Logged in as {{current_user.firstname}} {{current_user.surname}} ({{current_user.name}})</p>
-<p><a href="{{url_for('auth.logout')}}">Logout</a></p>
-<p><a href="{{url_for('nodes.list')}}">My Nodes</a></p>
-{% if current_user.in_group(3) %}
-<p><a href="{{url_for('nodes.all')}}">All Nodes</a></p>
-{% endif %}
-{% else %}
-<p><a href="{{url_for('auth.login')}}">Login</a></p>
-{% endif %}
+<h2>{{config.SITENAME}}</h2>
+<ul>
+    <li><a href="{{url_for('nodes.list')}}">My Nodes</a></li>
+    {% if current_user.in_group(3) %}
+    <li><a href="{{url_for('nodes.all')}}">All Nodes</a></li>
+    {% endif %}
+</ul>
 {% endblock %}

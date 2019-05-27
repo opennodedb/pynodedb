@@ -1,9 +1,13 @@
 {% extends('layouts/default.html') %}
 
 {% block content %}
+{% if request.path == url_for('nodes.all') %}
 <h2>All Nodes</h2>
+{% else %}
+<h2>Your Nodes</h2>
+{% endif %}
 
-<table>
+<table class="table">
     <tr>
         <th>ID</th>
         <th>Suburb</th>
