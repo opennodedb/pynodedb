@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.mysql import INTEGER
 
@@ -115,25 +117,39 @@ class User(db.Model):
     def __repr__(self):
         return f'<UserName {self.name}>'
 
-    # Attributes for flask_login
+    # Check if user is active
     @property
     def is_active(self):
-        return True
+        if self.expires_at > datetime.now():   
+            return True
+        return False
 
+    # A logged in user is authenticated
     @property
     def is_authenticated(self):
         return True
 
+    # A logged in user can't be anonymous
     @property
     def is_anonymous(self):
         return False
 
+    # Return user_id as a Unicode string
     def get_id(self):
         return f'{self.id}'
 
+    # Return User object based on user_id
     def get(id):
         user = User.query.get(id)
         return user
+
+    # Determine if user is in a group by group_id
+    def in_group(self, group_id):
+        for group in self.groups:
+            if group.id == group_id:
+                return True
+
+        return False
 
 
 class Group(db.Model):

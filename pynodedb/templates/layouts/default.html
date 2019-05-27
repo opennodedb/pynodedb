@@ -33,10 +33,21 @@
         </div>
       </nav>
       <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div id="messages">
+          <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        {% endwith %}
         <div class="content" id="content">
-          {% block content %}
-              <p>No content</p>
-          {% endblock content %}
+        {% block content %}
+          <p>No content</p>
+        {% endblock content %}
         </div>
       </div>
       <div id="push"></div>

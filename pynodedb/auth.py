@@ -13,7 +13,9 @@ from flask_login import (
 
 # import local modules
 from . import functions as f
-from . import database
+from .database import (
+    db, User, Group, OAuthToken
+)
 
 
 oauth = OAuth()
@@ -47,20 +49,20 @@ def authorize():
     user_id = user_data['id']
 
     # Save user token
-    user_token = database.OAuthToken.query.get(user_id)
+    user_token = OAuthToken.query.get(user_id)
     if user_token is None:
-        user_token = database.OAuthToken(user_id=user_id)
-        database.db.session.add(user_token)
+        user_token = OAuthToken(user_id=user_id)
+        db.session.add(user_token)
 
     user_token.token_type = token['token_type']
     user_token.access_token = token['access_token']
     user_token.refresh_token = token['refresh_token']
     user_token.expires_at = token['expires_at']
 
-    database.db.session.commit()
+    db.session.commit()
 
     # Log user in
-    user = database.User.query.get(user_data['id'])
+    user = User.query.get(user_data['id'])
     login_user(user, remember=True)
 
     # Redirect to requested page or home
@@ -77,10 +79,10 @@ def authorize():
 # Save user profile to database
 def save_user_profile(user_data):
     # Update user
-    user = database.User.query.get(user_data['id'])
+    user = User.query.get(user_data['id'])
     if user is None:
-        user = database.User()
-        database.db.session.add(user)
+        user = User()
+        db.session.add(user)
 
     user.id = user_data['id']
     user.name = user_data['username']
@@ -95,10 +97,10 @@ def save_user_profile(user_data):
 
     # Update groups
     for group_data in user_data['groups']:
-        group = database.Group.query.get(group_data['id'])
+        group = Group.query.get(group_data['id'])
         if group is None:
-            group = database.Group()
-            database.db.session.add(group)
+            group = Group()
+            db.session.add(group)
 
         group.id = group_data['id']
         group.name = group_data['name']
@@ -109,7 +111,7 @@ def save_user_profile(user_data):
         user.groups.append(group)
 
     # Save to database
-    database.db.session.commit()
+    db.session.commit()
 
 
 # Defne Anonymous User atttibutes

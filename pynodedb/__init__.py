@@ -1,11 +1,11 @@
-from flask import Flask, url_for
-from flask_login import LoginManager, current_user
+from flask import Flask, render_template
+from flask_login import LoginManager
 import sqlalchemy
 import ipaddress
 
 # import local modules
 from . import functions as f
-from . import database
+from .database import db, User
 from . import auth
 
 login_manager = LoginManager()
@@ -62,7 +62,7 @@ def create_app(test_config=None):
         password=app.config['DB_PASSWORD'],
     )
     with app.app_context():
-        database.db.init_app(app)
+        db.init_app(app)
 
     # Initilise Login Manager
     with app.app_context():
@@ -86,7 +86,7 @@ def create_app(test_config=None):
     # Load user_id from session
     @login_manager.user_loader
     def load_user(user_id):
-        user = database.User.get(user_id)
+        user = User.get(user_id)
         return user
 
     # Register blueprints
@@ -96,11 +96,7 @@ def create_app(test_config=None):
 
     @app.route('/')
     def home():
-        return f"""<h2>Home</h2>
-<p>Logged in as {current_user.name}
-<p><a href="{url_for('auth.login')}">Login</a></p>
-<p><a href="{url_for('auth.logout')}">Logout</a></p>
-<p><a href="{url_for('nodes.list')}">Node list</a></p>"""
+        return render_template('home.html')
 
     # Return app factory
     return app
