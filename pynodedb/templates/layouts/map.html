@@ -16,59 +16,43 @@
     {% endblock css %}
   </head>
   <body>
-    <div id="wrap">
-      <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="{{url_for('home')}}">{{config['SITENAME']}}</a>
-          </div>
-          <ul class="nav navbar-nav">
-            <li class="dropdown">
-              {% if current_user.is_authenticated %}
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nodes<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="{{url_for('nodes.list')}}">My Nodes</a></li>
-                {% if current_user.in_group(3) %}
-                <li><a href="{{url_for('nodes.all')}}">All Nodes</a></li>
-                {% endif %}
-              </ul>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{url_for('home')}}">{{config['SITENAME']}}</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            {% if current_user.is_authenticated %}
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nodes<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="{{url_for('nodes.list')}}">My Nodes</a></li>
+              {% if current_user.in_group(3) %}
+              <li><a href="{{url_for('nodes.all')}}">All Nodes</a></li>
               {% endif %}
-            </li>
-            <li><a href="{{url_for('map')}}">Map</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              {% if current_user.is_authenticated %}
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.firstname}} {{current_user.surname}} ({{current_user.name}})<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="{{url_for('auth.logout')}}">Logout</a></li>
-              </ul>
-              {% else %}
-              <a href="{{url_for('auth.login')}}" >Login</a>
-              {% endif %}
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <div class="container" id="content-container">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <div id="messages">
-          <ul class=flashes>
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-          </ul>
-        </div>
-        {% endif %}
-        {% endwith %}
-        <div class="content" id="content">
-        {% block content %}
-          <p>No content</p>
-        {% endblock content %}
-        </div>
+            </ul>
+            {% endif %}
+          </li>
+          <li><a href="{{url_for('map')}}">Map</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            {% if current_user.is_authenticated %}
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.firstname}} {{current_user.surname}} ({{current_user.name}})<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="{{url_for('auth.logout')}}">Logout</a></li>
+            </ul>
+            {% else %}
+            <a href="{{url_for('auth.login')}}" >Login</a>
+            {% endif %}
+          </li>
+        </ul>
       </div>
-      <div id="push"></div>
+    </nav>
+    <div class="container" id="content-container">
+    {% block content %}
+      <p>No content</p>
+    {% endblock content %}
     </div>
     <div id="footer" class="container">
       <div class="row license text-center">

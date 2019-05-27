@@ -99,5 +99,9 @@ def create_app(test_config=None):
     def home():
         return render_template('home.html')
 
+    @app.route('/map')
+    def map():
+        return render_template('map.html')
+
     # Return app factory
     return app

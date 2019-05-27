@@ -1,0 +1,15 @@
+{% extends 'layouts/map.html' %}
+
+{% block script %}
+<script type="text/javascript" src="{{url_for('static', filename='js/map.js')}}"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{config.GOOGLE_MAPS_API_KEY}}&callback=initMap"
+    type="text/javascript"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/map.css')}}" />
+{% endblock %}
+
+{% block content %}
+<div id="map"></div>
+{% endblock %}

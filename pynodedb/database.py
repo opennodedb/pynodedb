@@ -120,7 +120,7 @@ class User(db.Model):
     # Check if user is active
     @property
     def is_active(self):
-        if self.expires_at > datetime.now():   
+        if self.expires_at > datetime.now():
             return True
         return False
 
