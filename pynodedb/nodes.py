@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 from flask_login import login_required
 
 # import local modules
+from . import functions as f
 from .database import Node
 
 
@@ -11,6 +12,8 @@ bp = Blueprint('nodes', __name__, url_prefix='/nodes')
 @bp.route('/', methods=['GET'])
 @login_required
 def list():
+    f.log(session)
+
     nodes = Node.query.all()
 
     return render_template('nodes/nodes.html', nodes=nodes)

@@ -1,7 +1,14 @@
-from flask import Blueprint, url_for, redirect, request
+from flask import (
+    Blueprint,
+    url_for,
+    redirect,
+    request,
+    session,
+    abort,
+)
 from authlib.flask.client import OAuth
 from flask_login import (
-    login_user, logout_user, login_required, AnonymousUserMixin
+    login_user, logout_user, AnonymousUserMixin
 )
 
 # import local modules
@@ -20,7 +27,6 @@ def login():
 
 
 @bp.route("/logout")
-@login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
@@ -57,6 +63,14 @@ def authorize():
     user = database.User.query.get(user_data['id'])
     login_user(user, remember=True)
 
+    # Redirect to requested page or home
+    if 'next' in session:
+        next = session['next']
+        session.pop('next')
+        if not f.is_safe_url(next):
+            return abort(400)
+
+        return redirect(next)
     return redirect(url_for('home'))
 
 
