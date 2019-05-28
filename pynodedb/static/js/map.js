@@ -126,6 +126,11 @@ function drawNodes(map)
                                 scale: 0.5,
                             },
                         });
+
+                        // On click, go to Node page
+                        pin.addListener('click', function() {
+                            window.location.href = '/nodes/view/' + node.id;
+                        });
                     }
                 });
             }
