@@ -9,13 +9,16 @@ from .database import db, Node
 bp = Blueprint('api', __name__, url_prefix='/api')
 
 
+# Return Node by ID
 @bp.route('node', methods=['GET', 'POST'])
 @login_required
 def node():
-    status = 'OK'
+    # Defaults
+    status = 'ERROR'
     errors = []
     data = {}
 
+    # Get Node by ID
     node_id = request.form.get('node_id') or request.args.get('node_id')
     if node_id:
         request.form.get('node_id')
@@ -28,12 +31,43 @@ def node():
 
     if node:
         data['node'] = node.to_dict()
+        status = 'OK'
     else:
         errors.append('node not found')
 
-    if len(errors) > 0:
-        status = 'ERROR'
+    # Build response and return as JSON
+    response = {
+        'status': status,
+        'errors': errors,
+        'data': data,
+    }
+    json = jsonify(response)
+    return json
 
+
+# Return all Nodes (Minimal dataset)
+@bp.route('nodes/all', methods=['GET', 'POST'])
+@login_required
+def all_nodes():
+    # Defaults
+    status = 'ERROR'
+    errors = []
+    data = {}
+
+    # Get Node by ID
+    serialized_nodes = []
+    nodes = db.session.query(Node).options(noload('*')).all()
+    if nodes:
+        # serialize data
+        for node in nodes:
+            serialized_nodes.append(node.to_dict())
+
+        status = 'OK'
+        data['nodes'] = serialized_nodes
+    else:
+        errors.append('An error occurred fetching Nodes from DB')
+
+    # Build response and return as JSON
     response = {
         'status': status,
         'errors': errors,

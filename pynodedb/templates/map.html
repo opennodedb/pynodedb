@@ -6,13 +6,14 @@ var jsdata = {
     'defaultCentre': "{{config.MAP_DEFAULT_CENTRE}}"
 };
 </script>
-<script type="text/javascript" src="{{url_for('static', filename='js/map.js')}}"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{config.GOOGLE_MAPS_API_KEY}}&callback=initMap"
+<script type="text/javascript" src="{{url_for('static', filename='js/map.js')}}?{{random(8)}}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{config.GOOGLE_MAPS_API_KEY}}&callback=initMap"
     type="text/javascript"></script>
+<script type="text/javascript" src="{{url_for('static', filename='vendor/map-icons/dist/js/map-icons.js')}}"></script>
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{url_for('static', filename='css/map.css')}}" />
+<link rel="stylesheet" href="{{url_for('static', filename='css/map.css')}}?{{random(8)}}" />
 {% endblock %}
 
 {% block content %}

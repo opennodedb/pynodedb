@@ -31,3 +31,11 @@ nav.navbar-inverse .navbar-nav>li>a {
     bottom: 0px;
     height: 30px;
 }
+
+.map-icon-label .map-icon-red {
+    color: red;
+}
+
+.map-icon-label .map-icon-blue {
+    color: blue;
+}

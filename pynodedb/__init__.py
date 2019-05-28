@@ -42,6 +42,7 @@ def create_app(test_config=None):
     # Jinja2 config
     app.jinja_env.trim_blocks = True
     app.jinja_env.lstrip_blocks = True
+    app.jinja_env.globals.update(random=f.random_string)
 
     # Custom Jinga2 filters
     @app.template_filter('ipv4address')
