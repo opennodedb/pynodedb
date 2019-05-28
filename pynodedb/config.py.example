@@ -4,6 +4,7 @@ SECRET_KEY = 'Hack Me Please'
 
 # pynodedb App Config
 SITENAME = 'pynodedb'
+MAP_DEFAULT_CENTRE = 'Adelaide, South Australia, Australia'
 GOOGLE_MAPS_API_KEY = 'api key'
 
 # Primary Database Config

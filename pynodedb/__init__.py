@@ -1,11 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_login import LoginManager
 import sqlalchemy
 import ipaddress
 
 # import local modules
 from . import functions as f
-from .database import db, User
+from .database import db, User, Node
 from . import auth
 
 login_manager = LoginManager()
@@ -33,6 +33,7 @@ def create_app(test_config=None):
         OAUTH_API_BASE_URL='https://members.air-stream.org/api/',
         USE_SESSION_FOR_NEXT=True,
         GOOGLE_MAPS_API_KEY=None,
+        MAP_DEFAULT_CENTRE=None,
     )
 
     # Load config file, if it exists
@@ -94,6 +95,8 @@ def create_app(test_config=None):
     from . import nodes
     app.register_blueprint(nodes.bp)
     app.register_blueprint(auth.bp)
+    from . import api
+    app.register_blueprint(api.bp)
 
     @app.route('/')
     def home():

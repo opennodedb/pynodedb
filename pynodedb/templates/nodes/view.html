@@ -1,6 +1,13 @@
 {% extends('layouts/default.html') %}
 
 {% block script %}
+<script type="text/javascript">
+    var jsdata = {
+        'node_id': {{node.id}},
+        'lat': {{node.lat}},
+        'lng': {{node.lng}},
+    };
+</script>
 <script type="text/javascript" src="{{url_for('static', filename='js/nodes/view.js')}}"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key={{config.GOOGLE_MAPS_API_KEY}}&callback=initMap"
   type="text/javascript"></script>
@@ -41,11 +48,11 @@
             </tr>
             <tr>
                 <td><b>Lat</b></td>
-                <td id="node_lat">{{node.lat}}</td>
+                <td>{{node.lat}}</td>
             </tr>
             <tr>
                 <td><b>Lng</b></td>
-                <td id="node_lng">{{node.lng}}</td>
+                <td>{{node.lng}}</td>
             </tr>
             <tr>
                 <td><b>Elevation</b></td>

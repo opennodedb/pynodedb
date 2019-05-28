@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.mysql import INTEGER
+from sqlalchemy_serializer import SerializerMixin
 
 from . import functions as f
 
@@ -31,7 +32,7 @@ group_user = db.Table('group_user',
 
 
 # Define tables
-class Node(db.Model):
+class Node(db.Model, SerializerMixin):
     __tablename__ = 'nodes'
 
     # Columns
@@ -234,7 +235,7 @@ class Host(db.Model):
     subnet_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('subnets.id'))
 
     def __repr__(self):
-        return f'<SubnetAddr {self.addr}/{self.mask}>'
+        return f'<HostAddr {self.addr}>'
 
 
 # OAuth token storage

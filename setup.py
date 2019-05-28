@@ -6,6 +6,7 @@ requires = [
     'flask',
     'flask_sqlalchemy',
     'flask-login',
+    'sqlalchemy_serializer',
     'authlib',
     'pymysql',
     'waitress',

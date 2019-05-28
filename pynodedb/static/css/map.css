@@ -6,9 +6,20 @@ body { height: 100%; margin: 0px; padding: 0px }
     padding: 0px;
     margin: 0px;
 }
-#nav { z-index: 100; position: absolute; 
-       margin: 10px 0px 0px 200px; background-color: #fff; 
-       border: 1px #000 Solid; padding: 5px; }
+
+nav.navbar-inverse,
+.navbar-inverse .navbar-nav>.open>a,
+.navbar-inverse .navbar-nav>.open,
+.navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover {
+    background-image: none;
+    background-color: rgba(2, 2, 2, 0.5);
+    border: none;
+}
+
+nav.navbar-inverse .navbar-brand,
+nav.navbar-inverse .navbar-nav>li>a {
+    color: #ddd;
+}
 
 #map {
     width: 100%;

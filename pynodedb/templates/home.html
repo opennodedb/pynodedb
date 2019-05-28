@@ -3,10 +3,14 @@
 {% block content %}
 <h2>{{config.SITENAME}}</h2>
 <ul>
+{% if current_user.is_authenticated %}
     <li><a href="{{url_for('nodes.list')}}">My Nodes</a></li>
     {% if current_user.in_group(3) %}
     <li><a href="{{url_for('nodes.all')}}">All Nodes</a></li>
     {% endif %}
     <li><a href="{{url_for('map')}}">Map</a></li>
+{% else %}
+    <li><a href="{{url_for('auth.login')}}">Login</a></li>
+{% endif %}
 </ul>
 {% endblock %}

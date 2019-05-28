@@ -1,7 +1,8 @@
 function initMap()
 {
-    lat = parseFloat($('#node_lat').text());
-    lng = parseFloat($('#node_lng').text());
+    var node_id = jsdata.node_id;
+    var lat = jsdata.lat;
+    var lng = jsdata.lng;
 
     var pin = { lat: lat, lng: lng };
     var map = new google.maps.Map(
@@ -23,8 +24,7 @@ function initMap()
 
     var url = new URL(window.location.href);
     url.pathname = '/map';
-    url.searchParams.set('lat', lat);
-    url.searchParams.set('lng', lng);
+    url.searchParams.set('node_id', node_id);
 
     map.addListener('click', function () {
         window.location.href = url;

@@ -119,3 +119,6 @@ class AnonymousUser(AnonymousUserMixin):
     @property
     def name(self):
         return 'Anonymous'
+
+    def in_group(self, id):
+        return False
