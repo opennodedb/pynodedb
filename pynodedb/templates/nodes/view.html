@@ -4,8 +4,8 @@
 <script type="text/javascript">
     var jsdata = {
         'node_id': {{node.id}},
-        'lat': {{node.lat}},
-        'lng': {{node.lng}},
+        'lat': {{node.privacy_lat(current_user)}},
+        'lng': {{node.privacy_lng(current_user)}},
     };
 </script>
 <script type="text/javascript" src="{{url_for('static', filename='js/nodes/view.js')}}"></script>
@@ -48,11 +48,11 @@
             </tr>
             <tr>
                 <td><b>Lat</b></td>
-                <td>{{node.lat}}</td>
+                <td>{{node.privacy_lat(current_user)}}</td>
             </tr>
             <tr>
                 <td><b>Lng</b></td>
-                <td>{{node.lng}}</td>
+                <td>{{node.privacy_lng(current_user)}}</td>
             </tr>
             <tr>
                 <td><b>Elevation</b></td>

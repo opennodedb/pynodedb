@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv bash
+
+config_file=/usr/local/share/pynodedb/pynodedb/config.py
+
+# Initial config.py setup
+echo "DEBUG=False" > $config_file
+echo "SECRET_KEY=$(python3 -c 'import os; print(os.urandom(16))')" >> $config_file
+
+# Handle all PYNODEDB_* environment variables
+for var in ${!PYNODEDB_*} ; do
+    echo $var=\""${!var}"\"  | sed -e "s/PYNODEDB_//" >> $config_file
+done

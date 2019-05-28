@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bash
+
+echo "Starting pynodedb Web Server"
+
+exec \
+    waitress-serve --listen=${PYNODEDB_LISTEN} --call 'pynodedb:create_app'
