@@ -26,6 +26,7 @@ function drawMap(centre)
 
     // Draw Node Pins
     drawNodes(map);
+    drawLinks(map);
 }
 
 function showDefaultMap()
@@ -122,5 +123,64 @@ function drawNodes(map)
             }
         },
         'json'
+    );
+}
+
+// Draw link lines
+function drawLinks(map)
+{
+    $.post(
+        '/api/links/all',
+        function (response) {
+            if (response.status == 'OK') {
+                links = response.data.links;
+
+                $.each(links, function (i, link) {
+                    var node_a = link.nodes[0];
+                    var node_b = link.nodes[1];
+
+                    if(node_a.status_id > 1 && node_a.status_id < 6 && node_b.status_id > 1 && node_b.status_id < 6){
+                        // Determine line colour
+                        // Default to grey
+                        lineColor = 'grey';
+                        lineOpacity = 0.5;
+                        lineWeight = 1;
+
+                        // If both nodes active, line will be blue or green
+                        if (node_a.status_id == 4 && node_b.status_id == 4) {
+                            // Operational Backbones are Blue
+                            if (link.type == 'BB') {
+                                lineColor = 'blue';
+                                lineOpacity = 0.8;
+                                lineWeight = 2;
+                            }
+                            // Operational Client links are Green
+                            if (link.type == 'CL') {
+                                lineColor = '#0f0';
+                                lineOpacity = 0.8;
+                                lineWeight = 2;
+                            }
+                        }
+
+                        // If one node is operational and the other is offline or faulted, use red
+                        if ((node_a.status_id == 4 && node_b.status_id > 4) || (node_a.status_id > 4 && node_b.status_id == 4)) {
+                            lineColor = 'red';
+                        }
+
+                        var line = new google.maps.Polyline({
+                            map: map,
+                            path: [
+                                {lat: node_a.lat, lng: node_a.lng},
+                                {lat: node_b.lat, lng: node_b.lng}
+                            ],
+                            geodesic: true,
+                            strokeColor: lineColor,
+                            strokeOpacity: lineOpacity,
+                            strokeWeight: lineWeight
+                        });
+                    }
+                });
+            }
+        }
     );
 }

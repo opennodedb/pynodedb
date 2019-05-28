@@ -183,7 +183,7 @@ class Status(db.Model):
         return f'<UserName {self.name}>'
 
 
-class Link(db.Model):
+class Link(db.Model, SerializerMixin):
     __tablename__ = 'links'
 
     # Columns
@@ -194,6 +194,12 @@ class Link(db.Model):
     freq = db.Column(db.Integer)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
+
+    # Many to many
+    linked_nodes = db.relationship('Node', secondary=link_node,
+                                   lazy='noload',
+                                   backref=db.backref('nodes', lazy='noload'),
+                                   )
 
     def __repr__(self):
         return f'<LinkName {self.name}>'

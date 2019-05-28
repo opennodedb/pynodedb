@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
-from sqlalchemy.orm import noload
+from sqlalchemy.orm import noload, joinedload
 
 from . import functions as f
-from .database import db, Node
+from .database import db, Node, Link
 
 # Define BLueprint
 bp = Blueprint('api', __name__, url_prefix='/api')
@@ -60,10 +60,62 @@ def all_nodes():
     if nodes:
         # serialize data
         for node in nodes:
-            serialized_nodes.append(node.to_dict())
+            serialized_nodes.append({
+                'id': node.id,
+                'user_id': node.user_id,
+                'status_id': node.status_id,
+                'name': node.name,
+                'lat': node.lat,
+                'lng': node.lng,
+            })
 
         status = 'OK'
         data['nodes'] = serialized_nodes
+    else:
+        errors.append('An error occurred fetching Nodes from DB')
+
+    # Build response and return as JSON
+    response = {
+        'status': status,
+        'errors': errors,
+        'data': data,
+    }
+    json = jsonify(response)
+    return json
+
+
+# Return all Links (Minimal dataset)
+@bp.route('links/all', methods=['GET', 'POST'])
+@login_required
+def all_links():
+    # Defaults
+    status = 'ERROR'
+    errors = []
+    data = {}
+
+    # Get Node by ID
+    serialized_links = []
+    links = db.session.query(Link).options(noload('*'), joinedload('linked_nodes')).all()
+    if links:
+        # serialize data
+        for link in links:
+            nodes = []
+            for node in link.linked_nodes:
+                nodes.append({
+                    'id': node.id,
+                    'lat': node.lat,
+                    'lng': node.lng,
+                    'status_id': node.status_id,
+                })
+
+            serialized_links.append({
+                'id': link.id,
+                'type': link.type,
+                'nodes': nodes,
+            })
+
+        status = 'OK'
+        data['links'] = serialized_links
     else:
         errors.append('An error occurred fetching Nodes from DB')
 
