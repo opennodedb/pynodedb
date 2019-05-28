@@ -65,8 +65,8 @@ def all_nodes():
                 'user_id': node.user_id,
                 'status_id': node.status_id,
                 'name': node.name,
-                'lat': node.lat,
-                'lng': node.lng,
+                'lat': node.privacy_lat(current_user),
+                'lng': node.privacy_lng(current_user),
             })
 
         status = 'OK'
@@ -103,8 +103,8 @@ def all_links():
             for node in link.linked_nodes:
                 nodes.append({
                     'id': node.id,
-                    'lat': node.lat,
-                    'lng': node.lng,
+                    'lat': node.privacy_lat(current_user),
+                    'lng': node.privacy_lng(current_user),
                     'status_id': node.status_id,
                 })
 

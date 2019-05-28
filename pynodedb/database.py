@@ -67,6 +67,20 @@ class Node(db.Model, SerializerMixin):
                               backref=db.backref('subnets', lazy=True),
                               )
 
+    # Psuedo-randomise location of Node
+    def privacy_lat(self, user):
+        lat = float(f'{self.lat:.2f}') + self.id / 100000
+        if user.id == self.user_id or user.in_group(3):
+            lat = self.lat
+        return lat
+
+    # Psuedo-randomise location of Node
+    def privacy_lng(self, user):
+        lng = float(f'{self.lng:.2f}') + self.id / 100000
+        if user.id == self.user_id or user.in_group(3):
+            lng = self.lng
+        return lng
+
     def __repr__(self):
         return f'<NameName {self.name}>'
 

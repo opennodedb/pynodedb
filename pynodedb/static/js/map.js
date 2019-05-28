@@ -7,9 +7,17 @@ function initMap()
 
 function drawMap(centre)
 {
+    var url = new URL(window.location);
+    var params = url.searchParams;
+    var startingZoom = 11;
+
+    if (params.get('node_id')) {
+        startingZoom = 14;
+    }
+
     map = new google.maps.Map(
         document.getElementById('map'), {
-            zoom: 13,
+            zoom: startingZoom,
             center: centre,
             mapTypeControlOptions: {
                 position: google.maps.ControlPosition.LEFT_TOP
