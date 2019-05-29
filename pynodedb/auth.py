@@ -63,7 +63,7 @@ def authorize():
 
     # Log user in
     user = User.query.get(user_data['id'])
-    login_user(user, remember=True)
+    login_user(user, remember=True, force=True)
 
     # Redirect to requested page or home
     if 'next' in session:

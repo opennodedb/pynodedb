@@ -2,15 +2,30 @@
 
 {% block content %}
 <h2>{{config.SITENAME}}</h2>
-<ul>
-{% if current_user.is_authenticated %}
-    <li><a href="{{url_for('nodes.list')}}">My Nodes</a></li>
-    {% if current_user.in_group(3) %}
-    <li><a href="{{url_for('nodes.all')}}">All Nodes</a></li>
+<div>
+    <ul>
+    {% if current_user.is_authenticated and current_user.is_active %}
+        <li><a href="{{url_for('nodes.list')}}">My Nodes</a></li>
+        {% if current_user.in_group(3) %}
+        <li><a href="{{url_for('nodes.all')}}">All Nodes</a></li>
+        {% endif %}
+        <li><a href="{{url_for('map')}}">Map</a></li>
+    {% elif not current_user.is_authenticated and not current_user.is_active %}
+        <li><a href="{{url_for('auth.login')}}">Login</a></li>
     {% endif %}
-    <li><a href="{{url_for('map')}}">Map</a></li>
-{% else %}
-    <li><a href="{{url_for('auth.login')}}">Login</a></li>
+    </ul>
+{% if current_user.is_authenticated and not current_user.is_active %}
+    <div class="jumbotron text-center">
+        <h3>Your Air-Stream Membership expired on {{current_user.expires_at|datetime('%B %#d, %Y')}}</h3>
+        <br />
+        <p class="text-center">
+            You must have a current Air-Stream Membership to use this tool.
+        </p>
+        <br />
+        <p class="text-center">
+            <a class="btn btn-primary btn-lg" href="https://members.air-stream.org/renew-membership">Renew Air-Stream Membership</a>
+        </p>
+    </div>
 {% endif %}
-</ul>
+</div>
 {% endblock %}

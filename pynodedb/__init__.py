@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request
-from flask_login import LoginManager
+from flask import Flask, render_template, url_for, redirect
+from flask_login import LoginManager, login_required, current_user
 import sqlalchemy
 import ipaddress
 
 # import local modules
 from . import functions as f
-from .database import db, User, Node
+from .database import db, User
 from . import auth
 
 login_manager = LoginManager()
@@ -54,6 +54,10 @@ def create_app(test_config=None):
     def ipv4network(value):
         ipv4network = ipaddress.ip_network(value)
         return ipv4network
+
+    @app.template_filter('datetime')
+    def datetimefmt(value, format='%d/%m/%Y'):
+        return value.strftime(format)
 
     # Initialise database
     app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemy.engine.url.URL(
@@ -104,7 +108,11 @@ def create_app(test_config=None):
         return render_template('home.html')
 
     @app.route('/map')
+    @login_required
     def map():
+        if not current_user.is_active:
+            return redirect(url_for('home'))
+
         return render_template('map.html')
 
     # Return app factory

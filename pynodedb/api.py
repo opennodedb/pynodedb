@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, abort
 from flask_login import login_required, current_user
 from sqlalchemy.orm import noload, joinedload
 
@@ -13,6 +13,10 @@ bp = Blueprint('api', __name__, url_prefix='/api')
 @bp.route('node', methods=['GET', 'POST'])
 @login_required
 def node():
+    # Check user hasn't expired
+    if not current_user.is_active:
+        abort(403)
+
     # Defaults
     status = 'ERROR'
     errors = []
@@ -49,6 +53,10 @@ def node():
 @bp.route('nodes/all', methods=['GET', 'POST'])
 @login_required
 def all_nodes():
+    # Check user hasn't expired
+    if not current_user.is_active:
+        abort(403)
+
     # Defaults
     status = 'ERROR'
     errors = []
@@ -88,6 +96,10 @@ def all_nodes():
 @bp.route('links/all', methods=['GET', 'POST'])
 @login_required
 def all_links():
+    # Check user hasn't expired
+    if not current_user.is_active:
+        abort(403)
+
     # Defaults
     status = 'ERROR'
     errors = []
