@@ -7,13 +7,14 @@
 <h2>Your Nodes</h2>
 {% endif %}
 
+{% include 'includes/paginator.html' %}
 <table class="table">
     <tr>
         <th>ID</th>
+        <th>Name</th>
         <th>Suburb</th>
         <th>Manager</th>
         <th>Status</th>
-        <th>Name</th>
         <th>Region</th>
         <th>Zone</th>
         <th>Lat</th>
@@ -25,10 +26,10 @@
 {% for node in nodes %}
     <tr>
         <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.id}}</a></td>
+        <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.name}}</a></td>
         <td>{{node.suburb.name}}</td>
         <td>{{node.user.name}}</td>
         <td>{{node.status.name}}</td>
-        <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.name}}</a></td>
         <td>{{node.region}}</td>
         <td>{{node.zone}}</td>
         <td>{{node.privacy_lat(current_user)}}</td>
@@ -39,4 +40,5 @@
     </tr>
 {% endfor %}
 </table>
+{% include 'includes/paginator.html' %}
 {% endblock %}

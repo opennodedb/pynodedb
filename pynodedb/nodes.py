@@ -1,4 +1,11 @@
-from flask import Blueprint, render_template, redirect, url_for, abort
+from flask import (
+    Blueprint,
+    render_template,
+    redirect,
+    url_for,
+    abort,
+    request,
+)
 from flask_login import login_required, current_user
 
 # import local modules
@@ -24,8 +31,19 @@ def list():
 @login_required
 def all():
     if current_user.in_group(3) and current_user.is_active:
-        nodes = Node.query.order_by('name').all()
-        return render_template('nodes/list.html', nodes=nodes)
+        page = request.args.get('page')
+        perpage = request.args.get('perpage') or 50
+        pagination = None
+        nodes = []
+
+        if page:
+            pagination = Node.query.order_by('name').paginate(
+                int(page), int(perpage), False)
+            nodes = pagination.items
+        else:
+            nodes = Node.query.order_by('name').all()
+
+        return render_template('nodes/list.html', nodes=nodes, pagination=pagination)
 
     return abort(403)
 

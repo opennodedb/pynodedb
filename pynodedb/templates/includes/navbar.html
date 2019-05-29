@@ -10,7 +10,7 @@
         <ul class="dropdown-menu">
           <li><a href="{{url_for('nodes.list')}}">My Nodes</a></li>
           {% if current_user.in_group(3) %}
-          <li><a href="{{url_for('nodes.all')}}">All Nodes</a></li>
+          <li><a href="{{url_for('nodes.all', page=1)}}">All Nodes</a></li>
           {% endif %}
         </ul>
       </li>
