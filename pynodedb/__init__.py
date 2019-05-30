@@ -26,6 +26,9 @@ def create_app(test_config=None):
         DB_USERNAME=None,
         DB_PASSWORD=None,
         SQLALCHEMY_TRACK_MODIFICATIONS=True,
+        SQLALCHEMY_ENGINE_OPTIONS={
+            'pool_recycle': 600,
+        },
         OAUTH_CLIENT_ID=None,
         OAUTH_CLIENT_SECRET=None,
         OAUTH_ACCESS_TOKEN_URL='https://members.air-stream.org/oauth/token',
