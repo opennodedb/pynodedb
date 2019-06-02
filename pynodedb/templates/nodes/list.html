@@ -10,18 +10,78 @@
 {% include 'includes/paginator.html' %}
 <table class="table">
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Suburb</th>
-        <th>Manager</th>
-        <th>Status</th>
-        <th>Region</th>
-        <th>Zone</th>
-        <th>Lat</th>
-        <th>Lng</th>
-        <th>Elevation</th>
-        <th>Antenna Height</th>
-        <th>BGP AS</th>
+        <th>
+            <a href="{{base_url}}?sort=nodes.id{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+                ID
+                {%if request.args.get('sort') == 'nodes.id'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
+        <th>
+            <a href="{{base_url}}?sort=nodes.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+                Name
+                {%if request.args.get('sort') == 'nodes.name' or not request.args.get('sort')%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
+        <th>
+            <a href="{{base_url}}?sort=suburbs.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+                Suburb
+                {%if request.args.get('sort') == 'suburbs.name'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
+        <th>
+            <a href="{{base_url}}?sort=users.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+                Manager
+                {%if request.args.get('sort') == 'users.name'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
+        <th>
+            <a href="{{base_url}}?sort=statuses.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+                Status
+                {%if request.args.get('sort') == 'statuses.name'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
+        <th>
+            <a href="{{base_url}}?sort=nodes.region{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+                Region
+                {%if request.args.get('sort') == 'nodes.region'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
+        <th>
+            <a href="{{base_url}}?sort=nodes.zone{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+                Zone
+                {%if request.args.get('sort') == 'nodes.zone'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
+        <th>
+            <a href="{{base_url}}?sort=nodes.lat{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+                Lat
+                {%if request.args.get('sort') == 'nodes.lat'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
+        <th>
+            <a href="{{base_url}}?sort=nodes.lng{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+                Lng
+                {%if request.args.get('sort') == 'nodes.lng'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
+        <th>
+            <a href="{{base_url}}?sort=nodes.elevation{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+                Elevation
+                {%if request.args.get('sort') == 'nodes.elevation'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
+        <th>
+            <a href="{{base_url}}?sort=nodes.antHeight{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">Antenna 
+                Height
+                {%if request.args.get('sort') == 'nodes.antHeight'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
+        <th>
+            <a href="{{base_url}}?sort=nodes.asNum{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">BGP 
+                AS
+                {%if request.args.get('sort') == 'nodes.asNum'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            </a>
+        </th>
     </tr>
 {% for node in nodes %}
     <tr>
