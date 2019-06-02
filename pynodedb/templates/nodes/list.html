@@ -11,75 +11,147 @@
 <table class="table">
     <tr>
         <th>
-            <a href="{{base_url}}?sort=nodes.id{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+            <a href="{{base_url}}?sort=nodes.id{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if request.args.get('sort') == 'nodes.id' and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
                 ID
-                {%if request.args.get('sort') == 'nodes.id'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+                {%if request.args.get('sort') == 'nodes.id'%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
         <th>
-            <a href="{{base_url}}?sort=nodes.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+            <a href="{{base_url}}?sort=nodes.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if (request.args.get('sort') == 'nodes.name' or not request.args.get('sort')) and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
                 Name
-                {%if request.args.get('sort') == 'nodes.name' or not request.args.get('sort')%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+                {%if request.args.get('sort') == 'nodes.name' or not request.args.get('sort')%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
         <th>
-            <a href="{{base_url}}?sort=suburbs.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+            <a href="{{base_url}}?sort=suburbs.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if request.args.get('sort') == 'suburbs.name' and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
                 Suburb
-                {%if request.args.get('sort') == 'suburbs.name'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+                {%if request.args.get('sort') == 'suburbs.name'%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
         <th>
-            <a href="{{base_url}}?sort=users.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+            <a href="{{base_url}}?sort=users.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if request.args.get('sort') == 'users.name' and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
                 Manager
-                {%if request.args.get('sort') == 'users.name'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+                {%if request.args.get('sort') == 'users.name'%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
         <th>
-            <a href="{{base_url}}?sort=statuses.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+            <a href="{{base_url}}?sort=statuses.name{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if request.args.get('sort') == 'statuses.name' and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
                 Status
-                {%if request.args.get('sort') == 'statuses.name'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+                {%if request.args.get('sort') == 'statuses.name'%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
         <th>
-            <a href="{{base_url}}?sort=nodes.region{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+            <a href="{{base_url}}?sort=nodes.region{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if request.args.get('sort') == 'nodes.region' and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
                 Region
-                {%if request.args.get('sort') == 'nodes.region'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+                {%if request.args.get('sort') == 'nodes.region'%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
         <th>
-            <a href="{{base_url}}?sort=nodes.zone{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+            <a href="{{base_url}}?sort=nodes.zone{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if request.args.get('sort') == 'nodes.zone' and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
                 Zone
-                {%if request.args.get('sort') == 'nodes.zone'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+                {%if request.args.get('sort') == 'nodes.zone'%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
         <th>
-            <a href="{{base_url}}?sort=nodes.lat{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+            <a href="{{base_url}}?sort=nodes.lat{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if request.args.get('sort') == 'nodes.lat' and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
                 Lat
-                {%if request.args.get('sort') == 'nodes.lat'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+                {%if request.args.get('sort') == 'nodes.lat'%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
         <th>
-            <a href="{{base_url}}?sort=nodes.lng{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+            <a href="{{base_url}}?sort=nodes.lng{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if request.args.get('sort') == 'nodes.lng' and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
                 Lng
-                {%if request.args.get('sort') == 'nodes.lng'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+                {%if request.args.get('sort') == 'nodes.lng'%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
         <th>
-            <a href="{{base_url}}?sort=nodes.elevation{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">
+            <a href="{{base_url}}?sort=nodes.elevation{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if request.args.get('sort') == 'nodes.elevation' and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
                 Elevation
-                {%if request.args.get('sort') == 'nodes.elevation'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+                {%if request.args.get('sort') == 'nodes.elevation'%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
         <th>
-            <a href="{{base_url}}?sort=nodes.antHeight{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">Antenna 
-                Height
-                {%if request.args.get('sort') == 'nodes.antHeight'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            <a href="{{base_url}}?sort=nodes.antHeight{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if request.args.get('sort') == 'nodes.antHeight' and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
+                Antenna Height
+                {%if request.args.get('sort') == 'nodes.antHeight'%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
         <th>
-            <a href="{{base_url}}?sort=nodes.asNum{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}">BGP 
-                AS
-                {%if request.args.get('sort') == 'nodes.asNum'%}<span class="glyphicon glyphicon-chevron-down"></span>{%endif%}
+            <a href="{{base_url}}?sort=nodes.asNum{%if request.args.get('page')%}&amp;page={{request.args.get('page')}}{%endif%}{%if request.args.get('sort') == 'nodes.asNum' and (request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction'))%}&amp;sort_direction=desc{%else%}&amp;sort_direction=asc{%endif%}">
+                BGP AS
+                {%if request.args.get('sort') == 'nodes.asNum'%}
+                {%if request.args.get('sort_direction') == 'asc' or not request.args.get('sort_direction') %}
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                {%elif request.args.get('sort_direction') == 'desc'%}
+                <span class="glyphicon glyphicon-chevron-up"></span>
+                {%endif%}
+                {%endif%}
             </a>
         </th>
     </tr>

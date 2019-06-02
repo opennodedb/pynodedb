@@ -21,12 +21,13 @@ bp = Blueprint('nodes', __name__, url_prefix='/nodes')
 @login_required
 def list():
     sort = request.args.get('sort') or 'nodes.name'
+    sort_direction = request.args.get('sort_direction') or 'asc'
 
     if not current_user.is_active:
         return redirect(url_for('home'))
 
     nodes = Node.query.filter_by(
-        user_id=current_user.id).join(Suburb, User, Status).order_by(db.text(sort)).all()
+        user_id=current_user.id).join(Suburb, User, Status).order_by(db.text(f'{sort} {sort_direction}')).all()
     return render_template('nodes/list.html', nodes=nodes)
 
 
@@ -34,6 +35,7 @@ def list():
 @login_required
 def all():
     sort = request.args.get('sort') or 'nodes.name'
+    sort_direction = request.args.get('sort_direction') or 'asc'
 
     if current_user.in_group(3) and current_user.is_active:
         page = request.args.get('page')
@@ -42,7 +44,7 @@ def all():
         nodes = []
 
         if page:
-            pagination = Node.query.join(Suburb, User, Status).order_by(db.text(sort)).paginate(
+            pagination = Node.query.join(Suburb, User, Status).order_by(db.text(f'{sort} {sort_direction}')).paginate(
                 int(page), int(perpage), False)
             nodes = pagination.items
         else:
