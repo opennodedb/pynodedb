@@ -24,15 +24,15 @@
             </tr>
             <tr>
                 <td><b>Suburb</b></td>
-                <td>{{node.suburb.name}}</td>
+                <td><a href="{{url_for('nodes.list', filter='suburb', filter_id=node.suburb.name)}}">{{node.suburb.name|title}}</a></td>
             </tr>
             <tr>
                 <td><b>Manager</b></td>
-                <td>{{node.user.name}}</td>
+                <td><a href="{{url_for('nodes.list', filter='user', filter_id=node.user.name)}}">{{node.user.name}}</a></td>
             </tr>
             <tr>
                 <td><b>Status</b></td>
-                <td>{{node.status.name}}</td>
+                <td><a href="{{url_for('nodes.list', filter='status', filter_id=node.status.name)}}">{{node.status.name|title}}</a></td>
             </tr>
             <tr>
                 <td><b>name</b></td>
@@ -40,31 +40,31 @@
             </tr>
             <tr>
                 <td><b>Region</b></td>
-                <td>{{node.region}}</td>
+                <td><a href="{{url_for('nodes.list', filter='region', filter_id=node.region)}}">{{node.region|compass_to_name}}</a></td>
             </tr>
             <tr>
                 <td><b>Zone</b></td>
-                <td>{{node.zone}}</td>
+                <td><a href="{{url_for('nodes.list', filter='zone', filter_id=node.zone)}}">{{node.zone|title}}</a></td>
             </tr>
             <tr>
-                <td><b>Lat</b></td>
-                <td>{{node.privacy_lat(current_user)}}</td>
+                <td><b>Latitude</b></td>
+                <td>{{node.privacy_lat(current_user)}}&deg;</td>
             </tr>
             <tr>
-                <td><b>Lng</b></td>
-                <td>{{node.privacy_lng(current_user)}}</td>
+                <td><b>Longitude</b></td>
+                <td>{{node.privacy_lng(current_user)}}&deg;</td>
             </tr>
             <tr>
                 <td><b>Elevation</b></td>
-                <td>{{node.elevation}}</td>
+                <td>{{node.elevation}}m ASL</td>
             </tr>
             <tr>
                 <td><b>Antenna Height</b></td>
-                <td>{{node.antenna_height}}</td>
+                <td>{{node.antenna_height}}m AGL</td>
             </tr>
             <tr>
                 <td><b>BGP AS</b></td>
-                <td>{{node.bgp_as}}</td>
+                <td>{{node.bgp_as|zero_as_none}}</td>
             </tr>
         </table>
     </div>
