@@ -62,6 +62,17 @@ def create_app(test_config=None):
     def datetimefmt(value, format='%d/%m/%Y'):
         return value.strftime(format)
 
+    @app.template_filter('zero_as_none')
+    def zero_as_none(value):
+        if value == 0:
+            return None
+        else:
+            return value
+
+    @app.template_filter('compass_to_name')
+    def compass_to_name(value):
+        return f.compass_to_name(value)
+
     # Initialise database
     app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemy.engine.url.URL(
         app.config['DB_DRIVER'],

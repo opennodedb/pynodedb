@@ -22,3 +22,27 @@ def is_safe_url(target):
 def random_string(len):
     random_string = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(len)])
     return random_string
+
+
+# Convert short compass bearing to name
+def compass_to_name(value):
+    name = None
+
+    if value == 'N':
+        name = 'North'
+    if value == 'E':
+        name = 'East'
+    if value == 'S':
+        name = 'South'
+    if value == 'W':
+        name = 'West'
+    if value == 'NE':
+        name = 'North East'
+    if value == 'SE':
+        name = 'South East'
+    if value == 'SW':
+        name = 'South West'
+    if value == 'NW':
+        name = 'North West'
+
+    return name
