@@ -8,15 +8,22 @@ from . import functions as f
 
 db = SQLAlchemy()
 
+
 # Many to Many helper tables
-link_node = db.Table('link_node',
-                     db.Column('link_id', INTEGER(unsigned=True), db.ForeignKey(
-                         'links.id'), primary_key=True),
-                     db.Column('node_id', INTEGER(unsigned=True), db.ForeignKey(
-                         'nodes.id'), primary_key=True),
-                     db.Column('interface_id', INTEGER(unsigned=True), db.ForeignKey(
-                         'interfaces.id')),
-                     )
+class LinkNode(db.Model):
+    __tablename__ = 'link_node'
+
+    link_id = db.Column(INTEGER(unsigned=True), db.ForeignKey(
+        'links.id'), primary_key=True)
+    node_id = db.Column(INTEGER(unsigned=True), db.ForeignKey(
+        'nodes.id'), primary_key=True)
+    interface_id = db.Column(INTEGER(unsigned=True), db.ForeignKey(
+        'interfaces.id'))
+
+    # Relationships
+    link = db.relationship("Link", back_populates="nodes", lazy=True)
+    node = db.relationship("Node", back_populates="links", lazy=True)
+
 
 node_subnet = db.Table('node_subnet',
                        db.Column('subnet_id', INTEGER(unsigned=True), db.ForeignKey(
@@ -60,10 +67,7 @@ class Node(db.Model, SerializerMixin):
     hosts = db.relationship('Host', backref='hosts', lazy=True)
 
     # Many to many
-    links = db.relationship('Link', secondary=link_node,
-                            lazy='subquery',
-                            backref=db.backref('links', lazy=True),
-                            )
+    links = db.relationship('LinkNode', back_populates="node", lazy=True)
     subnets = db.relationship('Subnet', secondary=node_subnet,
                               lazy='subquery',
                               backref=db.backref('subnets', lazy=True),
@@ -84,7 +88,7 @@ class Node(db.Model, SerializerMixin):
         return lng
 
     def __repr__(self):
-        return f'<NameName {self.name}>'
+        return f'<NodeName {self.name}>'
 
 
 class Suburb(db.Model):
@@ -214,10 +218,7 @@ class Link(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime)
 
     # Many to many
-    linked_nodes = db.relationship('Node', secondary=link_node,
-                                   lazy='subquery',
-                                   backref=db.backref('nodes', lazy=True),
-                                   )
+    nodes = db.relationship('LinkNode', back_populates="link", lazy=True)
 
     def __repr__(self):
         return f'<LinkName {self.name}>'
@@ -257,6 +258,9 @@ class Host(db.Model):
     # Foreign Keys
     node_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('nodes.id'))
     subnet_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('subnets.id'))
+
+    # Relationships
+    interfaces = db.relationship('Interface', backref='interface', lazy=True)
 
     def __repr__(self):
         return f'<HostAddr {self.addr}>'

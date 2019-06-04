@@ -107,17 +107,17 @@ def all_links():
 
     # Get Node by ID
     serialized_links = []
-    links = db.session.query(Link).options(noload('*'), joinedload('linked_nodes')).all()
+    links = Link.query.all()
     if links:
         # serialize data
         for link in links:
             nodes = []
-            for node in link.linked_nodes:
+            for linked_node in link.nodes:
                 nodes.append({
-                    'id': node.id,
-                    'lat': node.privacy_lat(current_user),
-                    'lng': node.privacy_lng(current_user),
-                    'status_id': node.status_id,
+                    'id': linked_node.node.id,
+                    'lat': linked_node.node.privacy_lat(current_user),
+                    'lng': linked_node.node.privacy_lng(current_user),
+                    'status_id': linked_node.node.status_id,
                 })
 
             serialized_links.append({
