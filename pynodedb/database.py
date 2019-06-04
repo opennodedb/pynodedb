@@ -14,6 +14,8 @@ link_node = db.Table('link_node',
                          'links.id'), primary_key=True),
                      db.Column('node_id', INTEGER(unsigned=True), db.ForeignKey(
                          'nodes.id'), primary_key=True),
+                     db.Column('interface_id', INTEGER(unsigned=True), db.ForeignKey(
+                         'interfaces.id')),
                      )
 
 node_subnet = db.Table('node_subnet',
@@ -211,15 +213,15 @@ class Link(db.Model, SerializerMixin):
 
     # Many to many
     linked_nodes = db.relationship('Node', secondary=link_node,
-                                   lazy='noload',
-                                   backref=db.backref('nodes', lazy='noload'),
+                                   lazy='subquery',
+                                   backref=db.backref('nodes', lazy=True),
                                    )
 
     def __repr__(self):
         return f'<LinkName {self.name}>'
 
 
-class Subnet(db.Model):
+class Subnet(db.Model, SerializerMixin):
     __tablename__ = 'subnets'
 
     # Columns
@@ -256,6 +258,28 @@ class Host(db.Model):
 
     def __repr__(self):
         return f'<HostAddr {self.addr}>'
+
+
+class Interface(db.Model):
+    __tablename__ = 'interfaces'
+
+    # Columns
+    id = db.Column(INTEGER(unsigned=True),
+                   primary_key=True, autoincrement=False)
+    type = db.Column(db.String(64))
+    ssid = db.Column(db.String(255))
+    mode = db.Column(db.String(64))
+    protocol = db.Column(db.String(64))
+    freq = db.Column(INTEGER(unsigned=True))
+    passphrase = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
+
+    # Foreign Keys
+    host_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('hosts.id'))
+
+    def __repr__(self):
+        return f'<InterfaceType {self.type}>'
 
 
 # OAuth token storage
