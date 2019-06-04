@@ -119,6 +119,9 @@ def create_app(test_config=None):
 
     @app.route('/')
     def home():
+        if current_user.is_authenticated and current_user.expires_at is None:
+            return redirect(url_for('auth.logout'))
+
         return render_template('home.html')
 
     @app.route('/map')
