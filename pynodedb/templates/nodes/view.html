@@ -35,7 +35,7 @@
                 <td><a href="{{url_for('nodes.list', filter='status', filter_id=node.status.name)}}">{{node.status.name|title}}</a></td>
             </tr>
             <tr>
-                <td><b>name</b></td>
+                <td><b>Name</b></td>
                 <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.name}}</a></td>
             </tr>
             <tr>
@@ -73,23 +73,47 @@
     </div>
 </div>
 <div class="row">
-    <h3>Links</h3>
-    <ul>
-    {% for link in node.links %}
-        <li>{{link.name}}</li>
-    {% endfor %}
-    </ul>
-
-    <h3>Subnets</h3>
-    <ul>
-    {% for subnet in node.subnets %}
-        <li>{{(subnet.addr|ipv4address|string + '/' + subnet.mask|string)|ipv4network}}</li>
+    <div class="col-sm-6">
+        <h3>Links</h3>
+        <h4>Access Points</h4>
+        {% if aps %}
+        {% for ap in aps %}
+        <h5>{{ap.interface.ssid}}<h5>
         <ul>
-    {% for host in subnet.hosts %}
-            <li>{{host.addr|ipv4address}}: {{host.name}}</li>
-    {% endfor %}
+            <li><b>DNS:</b> {{ap.host.fqdn}}</li>
+            <li><b>IP Address:</b> {{ap.host.addr|ipv4address}}/{{ap.host.subnet.mask}}</li>
         </ul>
-    {% endfor %}
-    </ul>
+        <h6>Clients</h6>
+        {% if ap.clients %}
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Manager</th>
+                <th>IP Address</th>
+                <th style="white-space: nowrap">BGP AS</th>
+            </tr>
+            {% for client in ap.clients %}
+            <tr>
+                <td><a href="{{url_for('nodes.view', id=client.node.id)}}">{{client.node.id}}</a></td>
+                <td><a href="{{url_for('nodes.view', id=client.node.id)}}">{{client.node.name}}</a></td>
+                <td><a href="{{url_for('nodes.list', filter='user', filter_id=client.node.user.name)}}">{{client.node.user.name}}</a></td>
+                <td>{{client.interface.host.addr|ipv4address}}/{{ap.host.subnet.mask}}</td>
+                <td>{{client.node.bgp_as|zero_as_none}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p><i>There are no Clients on this Access Point</i><br /></p>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <p><i>This Node has no Access Points</i></br ></p>
+        {% endif %}
+        <h4>Point to Point</h4>
+        {% for bb in bbs %}
+        {{bb.interface.mode}} {{bb.interface.ssid}} {{bb.interface.type}}<br />
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

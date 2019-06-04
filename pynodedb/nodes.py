@@ -8,10 +8,21 @@ from flask import (
     jsonify,
 )
 from flask_login import login_required, current_user
+from sqlalchemy.orm import noload, joinedload
 
 # import local modules
 from . import functions as f
-from .database import db, Node, Suburb, User, Status
+from .database import (
+    db,
+    Node,
+    Suburb,
+    User,
+    Status,
+    Subnet,
+    Host,
+    Link,
+    Interface,
+)
 
 # Define BLueprint
 bp = Blueprint('nodes', __name__, url_prefix='/nodes')
@@ -19,6 +30,7 @@ bp = Blueprint('nodes', __name__, url_prefix='/nodes')
 
 @bp.route('/', defaults={'filter': None, 'filter_id': None})
 @bp.route('/<filter>/<filter_id>')
+@login_required
 def list(filter=None, filter_id=None):
     if not current_user.is_active:
         return redirect(url_for('home'))
@@ -153,4 +165,44 @@ def view(id):
         return redirect(url_for('home'))
 
     node = Node.query.filter_by(id=id).first()
-    return render_template('nodes/view.html', node=node)
+
+    # Build list of Access Points
+    aps = []
+    for host in node.hosts:
+        for interface in host.interfaces:
+            if interface.mode == 'AP':
+                clients = []
+
+                # Iterate AP links
+                for link in interface.links:
+                    # Get AP/Client link pair
+                    client_links = Link.query.filter_by(id=link.link_id).all()
+                    for client_link in client_links:
+                        # Iterate over AP/client link pair and pluck the client Node object
+                        for client in client_link.nodes:
+                            if client.node.id != node.id:
+                                clients.append(client)
+
+                ap = {
+                    'host': host,
+                    'interface': interface,
+                    'clients': clients,
+                }
+                aps.append(ap)
+
+                break
+
+    # Build list of Point to Point links
+    bbs = []
+    for host in node.hosts:
+        for interface in host.interfaces:
+            if interface.mode == 'BB':
+                bb = {
+                    'host': host,
+                    'interface': interface,
+                }
+                bbs.append(bb)
+
+                break
+
+    return render_template('nodes/view.html', node=node, aps=aps, bbs=bbs)

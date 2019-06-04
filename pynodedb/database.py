@@ -23,6 +23,9 @@ class LinkNode(db.Model):
     # Relationships
     link = db.relationship("Link", back_populates="nodes", lazy=True)
     node = db.relationship("Node", back_populates="links", lazy=True)
+    interface = db.relationship("Interface", lazy=True)
+    db.relationship("Interface", back_populates="links", lazy=True)
+    db.relationship("Interface", back_populates="nodes", lazy=True)
 
 
 node_subnet = db.Table('node_subnet',
@@ -237,7 +240,7 @@ class Subnet(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime)
 
     # Relationships
-    hosts = db.relationship('Host', backref='status', lazy=True)
+    hosts = db.relationship('Host', backref='subnet', lazy=True)
 
     def __repr__(self):
         return f'<SubnetAddr {self.addr}/{self.mask}>'
@@ -260,7 +263,7 @@ class Host(db.Model):
     subnet_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('subnets.id'))
 
     # Relationships
-    interfaces = db.relationship('Interface', backref='interface', lazy=True)
+    interfaces = db.relationship('Interface', backref='host', lazy=True)
 
     def __repr__(self):
         return f'<HostAddr {self.addr}>'
@@ -283,6 +286,10 @@ class Interface(db.Model):
 
     # Foreign Keys
     host_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('hosts.id'))
+
+    # Many to Many
+    links = db.relationship('LinkNode', lazy=True)
+    nodes = db.relationship('LinkNode', lazy=True)
 
     def __repr__(self):
         return f'<InterfaceType {self.type}>'
