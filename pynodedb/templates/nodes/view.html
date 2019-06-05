@@ -88,8 +88,16 @@
                 <td><b>IP Address</b></td>
                 <td>{{ap.host.addr|ipv4address}}/{{ap.host.subnet.mask}}</td>
             </tr>
+            <tr>
+                <td><b>Frequency</b></td>
+                <td>{{ap.interface.freq}} MHz</td>
+            </tr>
+            <tr>
+                <td><b>Pre-shared Key</b></td>
+                <td>{{ap.interface.passphrase}}</td>
+            </tr>
         </table>
-        <h6>Clients</h6>
+        <h6>Client Nodes</h6>
         {% if ap.clients %}
         <table class="table table-sortable">
             <thead>
@@ -116,16 +124,37 @@
             </tbody>
         </table>
         {% else %}
-        <p><i>There are no Clients on this Access Point</i><br /></p>
+        <p><i>There are no Clients Nodes linked to this Access Point</i><br /></p>
         {% endif %}
         {% endfor %}
         {% else %}
         <p><i>This Node has no Access Points</i></br ></p>
         {% endif %}
         <h4>Point to Point</h4>
-        {% for bb in bbs %}
-        {{bb.interface.mode}} {{bb.interface.ssid}} {{bb.interface.type}}<br />
-        {% endfor %}
+        {% if bbs %}
+        <table class="table table-sortable">
+            <thead>
+                <tr>
+                    <th>Remote Node</th>
+                    <th>Manager</th>
+                    <th>Frequency</th>
+                    <th>IP Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bb in bbs %}
+                <tr>
+                    <td><a href="{{url_for('nodes.view', id=bb.clients[0].node.name)}}">{{bb.clients[0].node.name}}</a></td>
+                    <td><a href="{{url_for('nodes.list', filter='user', filter_id=bb.clients[0].node.user.name)}}">{{bb.clients[0].node.user.name}}</a></td>
+                    <td>{%if bb.interface.freq != 0 %}{{bb.interface.freq}} MHz{%else%}Unknown{%endif%}</td>
+                    <td>{{bb.host.addr|ipv4address}}/{{bb.host.subnet.mask}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p><i>This Node has no Point to Point Links</i></br ></p>
+        {% endif %}
     </div>
     <div class="col-sm-6">
         <h3>Networks</h3>

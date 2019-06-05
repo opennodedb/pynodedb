@@ -166,43 +166,34 @@ def view(id):
 
     node = Node.query.filter_by(id=id).first()
 
-    # Build list of Access Points
+    # Build list of links
     aps = []
-    for host in node.hosts:
-        for interface in host.interfaces:
-            if interface.mode == 'AP':
-                clients = []
-
-                # Iterate AP links
-                for link in interface.links:
-                    # Get AP/Client link pair
-                    client_links = Link.query.filter_by(id=link.link_id).all()
-                    for client_link in client_links:
-                        # Iterate over AP/client link pair and pluck the client Node object
-                        for client in client_link.nodes:
-                            if client.node.id != node.id:
-                                clients.append(client)
-
-                ap = {
-                    'host': host,
-                    'interface': interface,
-                    'clients': clients,
-                }
-                aps.append(ap)
-
-                break
-
-    # Build list of Point to Point links
     bbs = []
     for host in node.hosts:
         for interface in host.interfaces:
-            if interface.mode == 'BB':
-                bb = {
-                    'host': host,
-                    'interface': interface,
-                }
-                bbs.append(bb)
+            clients = []
 
-                break
+            # Iterate AP links
+            for interface_link in interface.links:
+                # Get AP/Client link pair
+                client_links = Link.query.filter_by(id=interface_link.link_id).all()
+                for client_link in client_links:
+                    # Iterate over AP/client link pair and pluck the client Node object
+                    for client in client_link.nodes:
+                        if client.node.id != node.id:
+                            clients.append(client)
+
+            link = {
+                'host': host,
+                'interface': interface,
+                'clients': clients,
+            }
+
+            if interface.mode == 'AP':
+                aps.append(link)
+            elif interface.mode == 'BB' or interface.mode == 'CL':
+                bbs.append(link)
+
+            break
 
     return render_template('nodes/view.html', node=node, aps=aps, bbs=bbs)
