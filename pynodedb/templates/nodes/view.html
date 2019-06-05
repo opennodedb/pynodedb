@@ -79,29 +79,41 @@
         {% if aps %}
         {% for ap in aps %}
         <h5>{{ap.interface.ssid}}<h5>
-        <ul>
-            <li><b>DNS:</b> {{ap.host.fqdn}}</li>
-            <li><b>IP Address:</b> {{ap.host.addr|ipv4address}}/{{ap.host.subnet.mask}}</li>
-        </ul>
-        <h6>Clients</h6>
-        {% if ap.clients %}
         <table class="table">
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Manager</th>
-                <th>IP Address</th>
-                <th style="white-space: nowrap">BGP AS</th>
+                <td><b>DNS</b></td>
+                <td>{{ap.host.fqdn}}</td>
             </tr>
-            {% for client in ap.clients %}
             <tr>
-                <td><a href="{{url_for('nodes.view', id=client.node.id)}}">{{client.node.id}}</a></td>
-                <td><a href="{{url_for('nodes.view', id=client.node.id)}}">{{client.node.name}}</a></td>
-                <td><a href="{{url_for('nodes.list', filter='user', filter_id=client.node.user.name)}}">{{client.node.user.name}}</a></td>
-                <td>{{client.interface.host.addr|ipv4address}}/{{ap.host.subnet.mask}}</td>
-                <td>{{client.node.bgp_as|zero_as_none}}</td>
+                <td><b>IP Address</b></td>
+                <td>{{ap.host.addr|ipv4address}}/{{ap.host.subnet.mask}}</td>
             </tr>
-            {% endfor %}
+        </table>
+        <h6>Clients</h6>
+        {% if ap.clients %}
+        <table class="table table-sortable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Manager</th>
+                    <th>Status</th>
+                    <th>IP Address</th>
+                    <th style="white-space: nowrap">BGP AS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in ap.clients %}
+                <tr>
+                    <td><a href="{{url_for('nodes.view', id=client.node.id)}}">{{client.node.id}}</a></td>
+                    <td><a href="{{url_for('nodes.view', id=client.node.id)}}">{{client.node.name}}</a></td>
+                    <td><a href="{{url_for('nodes.list', filter='user', filter_id=client.node.user.name)}}">{{client.node.user.name}}</a></td>
+                    <td><a href="{{url_for('nodes.list', filter='status', filter_id=client.node.status.name)}}">{{client.node.status.name|title}}</a></td>
+                    <td>{{client.interface.host.addr|ipv4address}}/{{ap.host.subnet.mask}}</td>
+                    <td>{{client.node.bgp_as|zero_as_none}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
         {% else %}
         <p><i>There are no Clients on this Access Point</i><br /></p>
@@ -113,6 +125,15 @@
         <h4>Point to Point</h4>
         {% for bb in bbs %}
         {{bb.interface.mode}} {{bb.interface.ssid}} {{bb.interface.type}}<br />
+        {% endfor %}
+    </div>
+    <div class="col-sm-6">
+        <h3>Networks</h3>
+        <h4>Local Area Networks</h4>
+        {% for subnet in node.subnets %}
+        {% if subnet.type == 'LAN' %}
+        <h5>{{subnet.addr|ipv4address}}/{{subnet.mask}}</h5>
+        {% endif %}
         {% endfor %}
     </div>
 </div>

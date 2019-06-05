@@ -34,3 +34,12 @@ function initMap()
         window.location.href = url;
     });
 };
+
+// Make table(s) sortable
+$(function() {
+    $('.table-sortable').DataTable({
+        paging: false,
+        info: false,
+        searching: false,
+    });
+});
