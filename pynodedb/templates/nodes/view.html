@@ -146,7 +146,7 @@
             <tbody>
                 {% for bb in bbs %}
                 <tr>
-                    <td><a href="{{url_for('nodes.view', id=bb.clients[0].node.name)}}">{{bb.clients[0].node.name}}</a></td>
+                    <td><a href="{{url_for('nodes.view', id=bb.clients[0].node.id)}}">{{bb.clients[0].node.name}}</a></td>
                     <td><a href="{{url_for('nodes.list', filter='user', filter_id=bb.clients[0].node.user.name)}}">{{bb.clients[0].node.user.name}}</a></td>
                     <td>{{bb.interface.mode|intmode_to_name}}</td>
                     <td>{{bb.interface.ssid}}</td>
