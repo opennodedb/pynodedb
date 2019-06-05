@@ -90,7 +90,7 @@
             </tr>
             <tr>
                 <td><b>Frequency</b></td>
-                <td>{{ap.interface.freq}} MHz</td>
+                <td>{%if ap.interface.freq != 0 %}{{ap.interface.freq}} MHz{%else%}Unknown{%endif%}</td>
             </tr>
             <tr>
                 <td><b>Pre-shared Key</b></td>
@@ -117,7 +117,7 @@
                     <td><a href="{{url_for('nodes.view', id=client.node.id)}}">{{client.node.name}}</a></td>
                     <td><a href="{{url_for('nodes.list', filter='user', filter_id=client.node.user.name)}}">{{client.node.user.name}}</a></td>
                     <td><a href="{{url_for('nodes.list', filter='status', filter_id=client.node.status.name)}}">{{client.node.status.name|title}}</a></td>
-                    <td>{{client.interface.host.addr|ipv4address}}/{{ap.host.subnet.mask}}</td>
+                    <td>{%if client.interface.host%}{{client.interface.host.addr|ipv4address}}/{{ap.host.subnet.mask}}{%else%}<i>Unknown</i>{%endif%}</td>
                     <td>{{client.node.bgp_as|zero_as_none}}</td>
                 </tr>
                 {% endfor %}
