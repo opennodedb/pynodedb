@@ -73,7 +73,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-md-12 col-lg-6">
         <h3>Links</h3>
         <h4>Access Points</h4>
         {% if aps %}
@@ -156,12 +156,28 @@
         <p><i>This Node has no Point to Point Links</i></br ></p>
         {% endif %}
     </div>
-    <div class="col-sm-6">
+    <div class="col-md-12 col-lg-6">
         <h3>Networks</h3>
         <h4>Local Area Networks</h4>
         {% for subnet in node.subnets %}
         {% if subnet.type == 'LAN' %}
         <h5>{{subnet.addr|ipv4address}}/{{subnet.mask}}</h5>
+        <table class="table table-sortable">
+            <thead>
+                <tr>
+                    <th>IP Address</th>
+                    <th>Hostname</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for host in subnet.hosts %}
+                <tr>
+                    <td>{{host.addr|ipv4address}}</td>
+                    <td>{{host.name}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         {% endif %}
         {% endfor %}
     </div>
