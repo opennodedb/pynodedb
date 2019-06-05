@@ -69,6 +69,18 @@ def create_app(test_config=None):
         else:
             return value
 
+    @app.template_filter('intmode_to_name')
+    def intmode_to_name(value):
+        name = value
+        if value == 'BB':
+            name = 'Point to Point'
+        if value == 'AP':
+            name = 'Access Point'
+        if value == 'CL':
+            name = 'Client'
+
+        return name
+
     @app.template_filter('compass_to_name')
     def compass_to_name(value):
         return f.compass_to_name(value)

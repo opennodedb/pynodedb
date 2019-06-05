@@ -73,13 +73,13 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12 col-lg-6">
+    <div class="col-md-12">
         <h3>Links</h3>
         <h4>Access Points</h4>
         {% if aps %}
         {% for ap in aps %}
         <h5>{{ap.interface.ssid}}<h5>
-        <table class="table">
+        <table class="table table-condensed">
             <tr>
                 <td><b>DNS</b></td>
                 <td>{{ap.host.fqdn}}</td>
@@ -99,7 +99,7 @@
         </table>
         <h6>Client Nodes</h6>
         {% if ap.clients %}
-        <table class="table table-sortable">
+        <table class="table table-condensed table-sortable">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -132,11 +132,13 @@
         {% endif %}
         <h4>Point to Point</h4>
         {% if bbs %}
-        <table class="table table-sortable">
+        <table class="table table-condensed table-sortable">
             <thead>
                 <tr>
                     <th>Remote Node</th>
                     <th>Manager</th>
+                    <th>Type</th>
+                    <th>SSID</th>
                     <th>Frequency</th>
                     <th>IP Address</th>
                 </tr>
@@ -146,6 +148,8 @@
                 <tr>
                     <td><a href="{{url_for('nodes.view', id=bb.clients[0].node.name)}}">{{bb.clients[0].node.name}}</a></td>
                     <td><a href="{{url_for('nodes.list', filter='user', filter_id=bb.clients[0].node.user.name)}}">{{bb.clients[0].node.user.name}}</a></td>
+                    <td>{{bb.interface.mode|intmode_to_name}}</td>
+                    <td>{{bb.interface.ssid}}</td>
                     <td>{%if bb.interface.freq != 0 %}{{bb.interface.freq}} MHz{%else%}Unknown{%endif%}</td>
                     <td>{{bb.host.addr|ipv4address}}/{{bb.host.subnet.mask}}</td>
                 </tr>
@@ -156,28 +160,30 @@
         <p><i>This Node has no Point to Point Links</i></br ></p>
         {% endif %}
     </div>
-    <div class="col-md-12 col-lg-6">
+    <div class="col-md-12">
         <h3>Networks</h3>
         <h4>Local Area Networks</h4>
         {% for subnet in node.subnets %}
         {% if subnet.type == 'LAN' %}
-        <h5>{{subnet.addr|ipv4address}}/{{subnet.mask}}</h5>
-        <table class="table table-sortable">
-            <thead>
-                <tr>
-                    <th>IP Address</th>
-                    <th>Hostname</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for host in subnet.hosts %}
-                <tr>
-                    <td>{{host.addr|ipv4address}}</td>
-                    <td>{{host.name}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="col-xs-12 col-md-6 col-lg-4">
+            <h5>{{subnet.addr|ipv4address}}/{{subnet.mask}}</h5>
+            <table class="table table-condensed table-sortable">
+                <thead>
+                    <tr>
+                        <th>IP Address</th>
+                        <th>Hostname</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for host in subnet.hosts %}
+                    <tr>
+                        <td>{{host.addr|ipv4address}}</td>
+                        <td>{{host.name}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% endif %}
         {% endfor %}
     </div>
