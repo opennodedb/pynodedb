@@ -277,6 +277,8 @@ class HostAlias(db.Model):
     id = db.Column(INTEGER(unsigned=True),
                    primary_key=True, autoincrement=False)
     name = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
 
     # Foreign Keys
     host_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('hosts.id'))
