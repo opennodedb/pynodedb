@@ -264,9 +264,25 @@ class Host(db.Model):
 
     # Relationships
     interfaces = db.relationship('Interface', backref='host', lazy=True)
+    host_aliases = db.relationship('HostAlias', backref='host', lazy=True)
 
     def __repr__(self):
         return f'<HostAddr {self.addr}>'
+
+
+class HostAlias(db.Model):
+    __tablename__ = 'host_aliases'
+
+    # Columns
+    id = db.Column(INTEGER(unsigned=True),
+                   primary_key=True, autoincrement=False)
+    name = db.Column(db.String(255))
+
+    # Foreign Keys
+    host_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('hosts.id'))
+
+    def __repr__(self):
+        return f'<HostALiasName {self.name}>'
 
 
 class Interface(db.Model):
