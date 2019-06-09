@@ -47,7 +47,7 @@ def list(filter=None, filter_id=None):
     search_filter = db.text('')
     if search_query:
         search_filter = db.or_(
-            Node.id == search_query,
+            Node.id == f.safe_int(search_query),
             Node.name.like(f'%{search_query}%'),
             Suburb.name.like(f'{search_query}%'),
             User.name.like(f'{search_query}%'),

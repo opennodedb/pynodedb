@@ -46,3 +46,11 @@ def compass_to_name(value):
         name = 'North West'
 
     return name
+
+
+# Convert string to int and return None if not possible
+def safe_int(value):
+    try:
+        return int(value)
+    except ValueError:
+        return None
