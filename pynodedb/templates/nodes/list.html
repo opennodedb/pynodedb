@@ -17,6 +17,7 @@
         </form>
     </div>
 </div>
+{% if len(nodes) > 0 %}
 <table class="table">
     <tr>
         {% for name, field in field_list.items() %}
@@ -49,5 +50,10 @@
     </tr>
 {% endfor %}
 </table>
+{% else %}
+<div class="row">
+    <h4>There are no Nodes to display.</h4>
+</div>
+{% endif %}
 {% include 'includes/paginator.html' %}
 {% endblock %}
