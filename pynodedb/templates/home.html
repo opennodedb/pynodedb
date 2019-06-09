@@ -6,7 +6,7 @@
     <ul>
     {% if current_user.is_authenticated and current_user.is_active %}
         <li><a href="{{url_for('nodes.list')}}">My Nodes</a></li>
-        <li><a href="{{url_for('nodes.all')}}">All Nodes</a></li>
+        <li><a href="{{url_for('nodes.list', filter='all')}}">All Nodes</a></li>
         <li><a href="{{url_for('map')}}">Map</a></li>
     {% elif not current_user.is_authenticated and not current_user.is_active %}
         <li><a href="{{url_for('auth.login')}}">Login</a></li>

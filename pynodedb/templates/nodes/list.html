@@ -2,11 +2,25 @@
 
 {% block content %}
 <h2>{{page_title}}</h2>
-{% include 'includes/paginator.html' %}
+<div class="row">
+    <div class="col-sm-8">
+        {% include 'includes/paginator.html' %}
+    </div>
+    <div class="col-sm-4 nav-search">
+        <form method="POST" action="{{request.base_url}}">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                    <input type="text" class="form-control" name="search_query" placeholder="Search"{%if request.form.get('search_query')%} value="{{request.form.get('search_query')}}"{%endif%} />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <table class="table">
     <tr>
         {% for name, field in field_list.items() %}
-        <th>
+        <th {%if field.extra_classes%} class="{{field.extra_classes}}{%endif%}">
             <a href="{{request.base_url}}?{%if page%}page={{page}}&amp;{%endif%}sort={{field.db_name}}&amp;sort_direction={%if sort.direction == 'asc' and sort.field == field.db_name%}desc{%else%}asc{%endif%}">
                 {{field.name}}
                 {%if sort.field == field.db_name and sort.direction == 'asc'%}
@@ -22,16 +36,16 @@
     <tr>
         <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.id}}</a></td>
         <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.name}}</a></td>
-        <td><a href="{{url_for('nodes.list', filter='suburb', filter_id=node.suburb.name)}}">{{node.suburb.name|title}}</a></td>
+        <td class="hidden-xs hidden-sm"><a href="{{url_for('nodes.list', filter='suburb', filter_id=node.suburb.name)}}">{{node.suburb.name|title}}</a></td>
         <td><a href="{{url_for('nodes.list', filter='user', filter_id=node.user.name)}}">{{node.user.name}}</a></td>
         <td><a href="{{url_for('nodes.list', filter='status', filter_id=node.status.name)}}">{{node.status.name|title}}</a></td>
-        <td><a href="{{url_for('nodes.list', filter='region', filter_id=node.region)}}">{{node.region|compass_to_name}}</a></td>
-        <td><a href="{{url_for('nodes.list', filter='zone', filter_id=node.zone)}}">{{node.zone|title}}</a></td>
-        <td>{{node.privacy_lat(current_user)}}</td> 
-        <td>{{node.privacy_lng(current_user)}}</td>
-        <td>{{node.elevation}}</td>
-        <td>{{node.antenna_height}}</td>
-        <td>{{node.bgp_as|zero_as_none}}</td>
+        <td class="hidden-xs hidden-sm hidden-md"><a href="{{url_for('nodes.list', filter='region', filter_id=node.region)}}">{{node.region|compass_to_name}}</a></td>
+        <td class="hidden-xs hidden-sm hidden-md"><a href="{{url_for('nodes.list', filter='zone', filter_id=node.zone)}}">{{node.zone|title}}</a></td>
+        <td class="hidden-xs">{{node.privacy_lat(current_user)}}</td> 
+        <td class="hidden-xs">{{node.privacy_lng(current_user)}}</td>
+        <td class="hidden-xs">{{node.elevation}}</td>
+        <td class="hidden-xs">{{node.antenna_height}}</td>
+        <td class="hidden-xs hidden-sm">{{node.bgp_as|zero_as_none}}</td>
     </tr>
 {% endfor %}
 </table>

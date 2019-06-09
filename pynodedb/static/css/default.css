@@ -6,6 +6,10 @@ body {
   font-size: 11px;
 }
 
+.nav-search {
+  margin: 20px 0 5px 0;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html,

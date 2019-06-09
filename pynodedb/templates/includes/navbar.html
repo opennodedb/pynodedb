@@ -16,7 +16,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nodes<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{{url_for('nodes.list')}}">My Nodes</a></li>
-            <li><a href="{{url_for('nodes.all')}}">All Nodes</a></li>
+            <li><a href="{{url_for('nodes.list', filter='all')}}">All Nodes</a></li>
           </ul>
         </li>
         <li><a href="{{url_for('map')}}">Map</a></li>
