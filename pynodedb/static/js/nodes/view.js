@@ -19,7 +19,14 @@ function initMap()
             draggableCursor: 'pointer',
         }
     );
-    var marker = new google.maps.Marker({ position: pin, map: map });
+
+    markerIcon = getMarkerIconByStatus(6, 48);
+    var marker = new google.maps.Marker({
+        position: pin,
+        map: map,
+        icon: markerIcon['path'],
+        opacity: markerIcon['opacity'],
+    });
 
 
     var url = new URL(window.location.href);

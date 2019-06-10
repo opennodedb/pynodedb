@@ -1,4 +1,4 @@
-[submodule "pynodedb/static/vendor/map-icons"]
-	path = pynodedb/static/vendor/map-icons
-	url = https://github.com/scottdejonge/map-icons.git
-	branch = v3.0.0
+[submodule "pynodedb/static/vendor/small-n-flat"]
+	path = pynodedb/static/vendor/small-n-flat
+	url = https://github.com/samburney/small-n-flat.git
+	branch = multi-coloured-markers

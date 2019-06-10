@@ -79,8 +79,6 @@ function showDefaultMap()
 // Draw Node Pins
 function drawNodes(map)
 {
-    var pinColor;
-
     // Get nodes via API
     $.post(
         '/api/nodes/all',
@@ -90,41 +88,14 @@ function drawNodes(map)
 
                 $.each(nodes, function(i, node) {
                     if (node.status_id > 1 && node.status_id < 6) {
-                        switch(node.status_id) {
-                            case 0:
-                            case 5:
-                                pinColor = 'black';
-                                break;
-                            case 1:
-                                pinColor = 'grey';
-                                break;
-                            case 2:
-                                pinColor = 'yellow';
-                                break;
-                            case 3:
-                                pinColor = 'orange';
-                                break;
-                            case 4:
-                                pinColor = '#0f0';
-                                break;
-                            case 4:
-                                pinColor = 'red';
-                                break;
-                        }
-
+                        var markerIcon = getMarkerIconByStatus(node.status_id);
                         var pinLatLng = new google.maps.LatLng(node.lat, node.lng);
-                        var pin = new Marker({
+                        var pin = new google.maps.Marker({
                             position: pinLatLng,
                             map: map,
                             title: node.name,
-                            icon: {
-                                path: MAP_PIN,
-                                fillColor: pinColor,
-                                fillOpacity: 0.8,
-                                strokeColor: 'black',
-                                strokeWeight: 0.5,
-                                scale: 0.5,
-                            },
+                            icon: markerIcon['path'],
+                            opacity: markerIcon['opacity'],
                         });
 
                         // On click, go to Node page
