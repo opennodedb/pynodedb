@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, abort
 from flask_login import login_required, current_user
 from sqlalchemy.orm import noload, joinedload
 
+from . import cache
 from . import functions as f
 from .database import db, Node, Link, Host, Interface
 
@@ -62,31 +63,39 @@ def all_nodes():
     errors = []
     data = {}
 
-    # Get Node by ID
-    serialized_nodes = []
-    nodes = Node.query.all()
-    if nodes:
-        # serialize data
-        for node in nodes:
-            # Determine if node has an AP
-            has_ap = False
-            ap_host = Host.query.filter(Host.node_id == node.id, Interface.mode == 'AP').join(Interface).first()
-            if ap_host:
-                has_ap = True
+    # Function to get all nodes
+    @cache.cached()
+    def get_nodes():
+        nodes_dict = None
+        nodes = Node.query.all()
+        if nodes:
+            # Create jsonable dict of Node data
+            nodes_dict = []
+            for node in nodes:
 
-            # Make a dict of node data
-            serialized_nodes.append({
-                'id': node.id,
-                'user_id': node.user_id,
-                'status_id': node.status_id,
-                'name': node.name,
-                'lat': node.privacy_lat(current_user),
-                'lng': node.privacy_lng(current_user),
-                'has_ap': has_ap,
-            })
+                # Determine if node has an AP
+                has_ap = False
+                ap_host = Host.query.filter(Host.node_id == node.id, Interface.mode == 'AP').join(Interface).first()
+                if ap_host:
+                    has_ap = True
 
+                # Make a dict of node data
+                nodes_dict.append({
+                    'id': node.id,
+                    'user_id': node.user_id,
+                    'status_id': node.status_id,
+                    'name': node.name,
+                    'lat': node.privacy_lat(current_user),
+                    'lng': node.privacy_lng(current_user),
+                    'has_ap': has_ap,
+                })
+
+        return nodes_dict
+
+    nodes = get_nodes()
+    if nodes is not None:
         status = 'OK'
-        data['nodes'] = serialized_nodes
+        data['nodes'] = nodes
     else:
         errors.append('An error occurred fetching Nodes from DB')
 
@@ -113,29 +122,36 @@ def all_links():
     errors = []
     data = {}
 
-    # Get Node by ID
-    serialized_links = []
-    links = Link.query.all()
-    if links:
-        # serialize data
-        for link in links:
-            nodes = []
-            for linked_node in link.nodes:
-                nodes.append({
-                    'id': linked_node.node.id,
-                    'lat': linked_node.node.privacy_lat(current_user),
-                    'lng': linked_node.node.privacy_lng(current_user),
-                    'status_id': linked_node.node.status_id,
+    # Function to get all nodes
+    @cache.cached()
+    def get_links():
+        links_dict = None
+        links = Link.query.all()
+        if links:
+            # serialize data
+            links_dict = []
+            for link in links:
+                nodes = []
+                for linked_node in link.nodes:
+                    nodes.append({
+                        'id': linked_node.node.id,
+                        'lat': linked_node.node.privacy_lat(current_user),
+                        'lng': linked_node.node.privacy_lng(current_user),
+                        'status_id': linked_node.node.status_id,
+                    })
+
+                links_dict.append({
+                    'id': link.id,
+                    'type': link.type,
+                    'nodes': nodes,
                 })
 
-            serialized_links.append({
-                'id': link.id,
-                'type': link.type,
-                'nodes': nodes,
-            })
+        return links_dict
 
+    links = get_links()
+    if links is not None:
         status = 'OK'
-        data['links'] = serialized_links
+        data['links'] = links
     else:
         errors.append('An error occurred fetching Nodes from DB')
 
