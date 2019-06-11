@@ -88,7 +88,7 @@ function drawNodes(map)
 
                 $.each(nodes, function(i, node) {
                     if (node.status_id > 1 && node.status_id < 6) {
-                        var markerIcon = getMarkerIconByStatus(node.status_id);
+                        var markerIcon = getMarkerIconByStatus(node.status_id, 24, node.has_ap);
                         var pinLatLng = new google.maps.LatLng(node.lat, node.lng);
                         var pin = new google.maps.Marker({
                             position: pinLatLng,

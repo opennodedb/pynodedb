@@ -20,12 +20,12 @@ function initMap()
         }
     );
 
-    markerIcon = getMarkerIconByStatus(6, 48);
+    markerIcon = getMarkerIconByStatus(jsdata.node_status, 48, jsdata.has_ap);
     var marker = new google.maps.Marker({
         position: pin,
         map: map,
         icon: markerIcon['path'],
-        opacity: markerIcon['opacity'],
+        opacity: 1,
     });
 
 

@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from sqlalchemy.orm import noload, joinedload
 
 from . import functions as f
-from .database import db, Node, Link
+from .database import db, Node, Link, Host, Interface
 
 # Define BLueprint
 bp = Blueprint('api', __name__, url_prefix='/api')
@@ -64,10 +64,17 @@ def all_nodes():
 
     # Get Node by ID
     serialized_nodes = []
-    nodes = db.session.query(Node).options(noload('*')).all()
+    nodes = Node.query.all()
     if nodes:
         # serialize data
         for node in nodes:
+            # Determine if node has an AP
+            has_ap = False
+            ap_host = Host.query.filter(Host.node_id == node.id, Interface.mode == 'AP').join(Interface).first()
+            if ap_host:
+                has_ap = True
+
+            # Make a dict of node data
             serialized_nodes.append({
                 'id': node.id,
                 'user_id': node.user_id,
@@ -75,6 +82,7 @@ def all_nodes():
                 'name': node.name,
                 'lat': node.privacy_lat(current_user),
                 'lng': node.privacy_lng(current_user),
+                'has_ap': has_ap,
             })
 
         status = 'OK'

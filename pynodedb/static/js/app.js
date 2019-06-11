@@ -1,5 +1,5 @@
 // Make node icon path
-function getMarkerIconByStatus(statusId, iconSize = 24, isAP = false) {
+function getMarkerIconByStatus(statusId, iconSize = 24, hasAp = false) {
     var icon = {
         color: 'red',
         size: iconSize,
@@ -25,8 +25,15 @@ function getMarkerIconByStatus(statusId, iconSize = 24, isAP = false) {
             icon['opacity'] = 0.8;
             break;
         case 4:
-            icon['color'] = 'green';
-            icon['opacity'] = 1;
+            if (hasAp) {
+                icon['color'] = 'blue';
+                icon['opacity'] = 1;
+            }
+            else {
+                icon['color'] = 'green';
+                icon['opacity'] = 1;
+
+            }
             break;
         case 6:
             icon['color'] = 'red';

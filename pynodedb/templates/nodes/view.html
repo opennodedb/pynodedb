@@ -4,6 +4,8 @@
 <script type="text/javascript">
     var jsdata = {
         'node_id': {{node.id}},
+        'node_status': {{node.status_id}},
+        'has_ap': {{len(aps)}},
         'lat': {{node.privacy_lat(current_user)}},
         'lng': {{node.privacy_lng(current_user)}},
     };
