@@ -5,7 +5,7 @@
     var jsdata = {
         'node_id': {{node.id}},
         'node_status': {{node.status_id}},
-        'has_ap': {{len(aps)}},
+        'has_ap': {{node.has_ap|lower}},
         'lat': {{node.privacy_lat(current_user)}},
         'lng': {{node.privacy_lng(current_user)}},
     };

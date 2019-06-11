@@ -90,6 +90,16 @@ class Node(db.Model, SerializerMixin):
             lng = self.lng
         return lng
 
+    # Determine if this Node has an AP or not
+    @property
+    def has_ap(self):
+        has_ap = False
+        ap_host = Host.query.filter(
+            Host.node_id == self.id, Interface.mode == 'AP').join(Interface).first()
+        if ap_host:
+            has_ap = True
+        return has_ap
+
     def __repr__(self):
         return f'<NodeName {self.name}>'
 

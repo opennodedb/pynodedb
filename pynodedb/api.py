@@ -72,13 +72,6 @@ def all_nodes():
             # Create jsonable dict of Node data
             nodes_dict = []
             for node in nodes:
-
-                # Determine if node has an AP
-                has_ap = False
-                ap_host = Host.query.filter(Host.node_id == node.id, Interface.mode == 'AP').join(Interface).first()
-                if ap_host:
-                    has_ap = True
-
                 # Make a dict of node data
                 nodes_dict.append({
                     'id': node.id,
@@ -87,7 +80,7 @@ def all_nodes():
                     'name': node.name,
                     'lat': node.privacy_lat(current_user),
                     'lng': node.privacy_lng(current_user),
-                    'has_ap': has_ap,
+                    'has_ap': node.has_ap,
                 })
 
         return nodes_dict
