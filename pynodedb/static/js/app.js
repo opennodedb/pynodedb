@@ -1,5 +1,5 @@
 // Make node icon path
-function getMarkerIconByStatus(statusId, iconSize = 24, hasAp = false) {
+function getMarkerIconByStatus(statusId, iconSize = 24, hasAp = false, color = null, opacity = null) {
     var icon = {
         color: 'red',
         size: iconSize,
@@ -40,6 +40,11 @@ function getMarkerIconByStatus(statusId, iconSize = 24, hasAp = false) {
             icon['opacity'] = 0.8;
             break;
     }
+
+    if (color)
+        icon['color'] = color;
+    if (opacity)
+        icon['opacity'] = opacity;
 
     icon['path'] = `/static/vendor/small-n-flat/png/${icon['size']}/map-marker-${icon['color']}.png`;
 

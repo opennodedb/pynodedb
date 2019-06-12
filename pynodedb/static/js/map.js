@@ -1,5 +1,8 @@
 var map;
 var pins;
+var url = new URL(window.location);
+var params = url.searchParams;
+
 
 function initMap()
 {
@@ -8,8 +11,6 @@ function initMap()
 
 function drawMap(centre)
 {
-    var url = new URL(window.location);
-    var params = url.searchParams;
     var startingZoom = 11;
 
     if (params.get('node_id')) {
@@ -95,8 +96,16 @@ function drawNodes(map)
                 var nodes = response.data.nodes;
 
                 $.each(nodes, function(i, node) {
-                    if (node.status_id > 1 && node.status_id < 6) {
-                        var markerIcon = getMarkerIconByStatus(node.status_id, 96, node.has_ap);
+                    if ((node.status_id > 1 && node.status_id < 6) || node.id == params.get('node_id')) {
+                        // If this node is defined in address bar make it stand out
+                        var color = null;
+                        var opacity = null;
+                        if (node.id == params.get('node_id')) {
+                            color = 'yellow';
+                            opacity = 1;
+                        };
+
+                        var markerIcon = getMarkerIconByStatus(node.status_id, 96, node.has_ap, color, opacity);
                         var pinLatLng = new google.maps.LatLng(node.lat, node.lng);
 
                         var label = new MapLabel({
