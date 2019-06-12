@@ -9,6 +9,7 @@ var jsdata = {
 <script type="text/javascript" src="{{url_for('static', filename='js/map.js')}}?{{random(8)}}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{config.GOOGLE_MAPS_API_KEY}}&callback=initMap"
     type="text/javascript"></script>
+<script type="text/javascript" src="{{url_for('static', filename='vendor/js-map-label/src/maplabel-compiled.js')}}"></script>
 {% endblock %}
 
 {% block css %}

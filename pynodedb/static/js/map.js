@@ -92,13 +92,22 @@ function drawNodes(map)
         '/api/nodes/all',
         function (response) {
             if (response.status == 'OK') {
-                nodes = response.data.nodes;
+                var nodes = response.data.nodes;
 
                 $.each(nodes, function(i, node) {
                     if (node.status_id > 1 && node.status_id < 6) {
                         var markerIcon = getMarkerIconByStatus(node.status_id, 96, node.has_ap);
                         var pinLatLng = new google.maps.LatLng(node.lat, node.lng);
-                        var pin = new google.maps.Marker({
+
+                        var label = new MapLabel({
+                            text: node.name,
+                            position: pinLatLng,
+                            map: map,
+                            fontSize: 12,
+                            align: 'center',
+                        });
+
+                        var marker = new google.maps.Marker({
                             position: pinLatLng,
                             map: map,
                             title: node.name,
@@ -113,11 +122,15 @@ function drawNodes(map)
                         });
 
                         // On click, go to Node page
-                        pin.addListener('click', function() {
+                        marker.addListener('click', function() {
                             window.location.href = '/nodes/view/' + node.id;
                         });
 
-                        pins.push(pin);
+                        pins.push({
+                            marker: marker,
+                            label: label,
+                            node: node,
+                        });
                     }
                 });
 
@@ -203,12 +216,23 @@ function handleZoom(map) {
     }
 
     $.each(pins, function (i, pin) {
-        pin.setIcon({
-            url: pin.getIcon().url,
+        pin.marker.setIcon({
+            url: pin.marker.getIcon().url,
             scaledSize: {
                 width: relativePixelSize,
                 height: relativePixelSize,
             },
         });
+
+        // Conditionally show and hide marker labels
+        if (zoom >= 12 && pin.node.status_id == 4) {
+            pin.label.set('map', map);
+        }
+        else if (zoom >= 14) {
+            pin.label.set('map', map);
+        }
+        else {
+            pin.label.set('map', null);
+        }
     });    
 }

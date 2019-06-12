@@ -40,7 +40,7 @@ def create_app(test_config=None):
         GOOGLE_MAPS_API_KEY=None,
         MAP_DEFAULT_CENTRE=None,
         CACHE_TYPE='simple',
-        CACHE_DEFAULT_TIMEOUT=300,
+        CACHE_DEFAULT_TIMEOUT=86400,
     )
 
     # Load config file, if it exists
