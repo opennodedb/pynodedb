@@ -24,6 +24,16 @@ function drawMap(centre)
             mapTypeControlOptions: {
                 position: google.maps.ControlPosition.LEFT_TOP
             },
+            styles: [
+                {
+                    featureType: 'poi',
+                    stylers: [{ visibility: 'off' }]
+                },
+                {
+                    featureType: 'transit',
+                    stylers: [{ visibility: 'off' }]
+                },
+            ],
         }
     );
 
