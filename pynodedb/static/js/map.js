@@ -1,4 +1,5 @@
 var map;
+var pins;
 
 function initMap()
 {
@@ -24,6 +25,11 @@ function drawMap(centre)
             },
         }
     );
+
+    // Handle map resize
+    google.maps.event.addListener(map, 'zoom_changed', function(){
+        handleZoom(map);
+    });
 
     // Insert spacer controls to push default controls down
     var spacerDiv = document.createElement('div');
@@ -79,6 +85,8 @@ function showDefaultMap()
 // Draw Node Pins
 function drawNodes(map)
 {
+    pins = [];
+
     // Get nodes via API
     $.post(
         '/api/nodes/all',
@@ -88,13 +96,19 @@ function drawNodes(map)
 
                 $.each(nodes, function(i, node) {
                     if (node.status_id > 1 && node.status_id < 6) {
-                        var markerIcon = getMarkerIconByStatus(node.status_id, 24, node.has_ap);
+                        var markerIcon = getMarkerIconByStatus(node.status_id, 96, node.has_ap);
                         var pinLatLng = new google.maps.LatLng(node.lat, node.lng);
                         var pin = new google.maps.Marker({
                             position: pinLatLng,
                             map: map,
                             title: node.name,
-                            icon: markerIcon['path'],
+                            icon: {
+                                url: markerIcon['path'],
+                                scaledSize: {
+                                    width: 32,
+                                    height: 32,
+                                },
+                            },
                             opacity: markerIcon['opacity'],
                         });
 
@@ -102,8 +116,12 @@ function drawNodes(map)
                         pin.addListener('click', function() {
                             window.location.href = '/nodes/view/' + node.id;
                         });
+
+                        pins.push(pin);
                     }
                 });
+
+                handleZoom(map);
             }
         },
         'json'
@@ -167,4 +185,30 @@ function drawLinks(map)
             }
         }
     );
+}
+
+// Handle map zoom event
+function handleZoom(map) {
+    var pixelSizeAtZoom0 = 1/2;
+    var minPixelSize = 16;
+    var maxPixelSize = 64;
+    var zoom = map.getZoom();
+    var relativePixelSize = Math.round(pixelSizeAtZoom0 * Math.pow(2, (zoom/2)));
+
+    if (relativePixelSize < minPixelSize) {
+        relativePixelSize = minPixelSize;
+    }
+    if (relativePixelSize > maxPixelSize) {
+        relativePixelSize = maxPixelSize;
+    }
+
+    $.each(pins, function (i, pin) {
+        pin.setIcon({
+            url: pin.getIcon().url,
+            scaledSize: {
+                width: relativePixelSize,
+                height: relativePixelSize,
+            },
+        });
+    });    
 }
