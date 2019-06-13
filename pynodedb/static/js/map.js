@@ -163,7 +163,6 @@ function drawNodes(map)
                     });
                 });
 
-                handleZoom();
                 handleNodeCheckboxes();
             }
         },
@@ -265,10 +264,10 @@ function handleZoom() {
 
         // Conditionally show and hide marker labels
         if (zoom >= 12 && pin.node.status_id == 4) {
-            pin.label.set('map', map);
+            pin.label.set('map', pin.marker.getMap());
         }
         else if (zoom >= 14) {
-            pin.label.set('map', map);
+            pin.label.set('map', pin.marker.getMap());
         }
         else {
             pin.label.set('map', null);
@@ -281,37 +280,45 @@ function handleNodeCheckboxes() {
         var cbStatus = cb.id.substring(8);
 
         $.each(pins, function(j, pin){
-            if (cbStatus == pin.node.status_id && !pin.node.has_ap) {
+            if (pin.node.id == params.get('node_id')) {
+                pin.marker.setMap(map);
+                pin.label.setMap(map);
+            }
+            else if (cbStatus == pin.node.status_id && !pin.node.has_ap) {
                 if ($(cb).prop('checked')) {
                     pin.marker.setMap(map);
+                    pin.label.setMap(map);
                 }
                 else {
                     pin.marker.setMap(null);
+                    pin.label.setMap(null);
                 }
             }
             else if (cbStatus == 'offline') {
                 if (pin.node.status_id == 0 || pin.node.status_id == 5 || pin.node.status_id == 6) {
                     if ($(cb).prop('checked')) {
                         pin.marker.setMap(map);
+                        pin.label.setMap(map);
                     }
                     else {
                         pin.marker.setMap(null);
+                        pin.label.setMap(null);
                     }
                 }
             }
             else if (pin.node.has_ap && pin.node.status_id == 4 && cbStatus == 'ap') {
                 if ($(cb).prop('checked')) {
                     pin.marker.setMap(map);
+                    pin.label.setMap(map);
                 }
                 else {
                     pin.marker.setMap(null);
+                    pin.label.setMap(null);
                 }
             }
-
-            if (pin.node.id == params.get('node_id')) {
-                pin.marker.setMap(map);
-            }
         });
+
+        handleZoom();
     });
 }
 
