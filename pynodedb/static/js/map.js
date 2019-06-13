@@ -307,6 +307,10 @@ function handleNodeCheckboxes() {
                     pin.marker.setMap(null);
                 }
             }
+
+            if (pin.node.id == params.get('node_id')) {
+                pin.marker.setMap(map);
+            }
         });
     });
 }
