@@ -3,6 +3,9 @@ var pins;
 var url = new URL(window.location);
 var params = url.searchParams;
 
+$('.cb-node').change(function() {
+    handleNodeCheckboxes();
+});
 
 function initMap()
 {
@@ -43,11 +46,17 @@ function drawMap(centre)
     });
 
     // Insert spacer controls to push default controls down
-    var spacerDiv = document.createElement('div');
-    spacerDiv.style.display = 'block';
-    spacerDiv.style.height = '50px';
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(spacerDiv);
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(spacerDiv);
+    var spacerDiv = $('<div>');
+    var spacerElem = spacerDiv.get(0);
+    spacerElem.style.display = 'block';
+    spacerElem.style.height = '50px';
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(spacerElem);
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(spacerElem);
+
+    // Insert spacer controls to push default controls down
+    var nodeTypeDiv = $("div#node-types");
+    var nodeTypeElem = nodeTypeDiv.get(0);
+    map.controls[google.maps.ControlPosition.RIGHT_TOP].push(nodeTypeElem);
 
     // Draw Node Pins
     drawNodes(map);
@@ -106,54 +115,51 @@ function drawNodes(map)
                 var nodes = response.data.nodes;
 
                 $.each(nodes, function(i, node) {
-                    if ((node.status_id > 1 && node.status_id < 6) || node.id == params.get('node_id')) {
-                        // If this node is defined in address bar make it stand out
-                        var color = null;
-                        var opacity = null;
-                        if (node.id == params.get('node_id')) {
-                            color = 'yellow';
-                            opacity = 1;
-                        };
+                    // If this node is defined in address bar make it stand out
+                    var color = null;
+                    var opacity = null;
+                    if (node.id == params.get('node_id')) {
+                        color = 'yellow';
+                        opacity = 1;
+                    };
 
-                        var markerIcon = getMarkerIconByStatus(node.status_id, 96, node.has_ap, color, opacity);
-                        var pinLatLng = new google.maps.LatLng(node.lat, node.lng);
+                    var markerIcon = getMarkerIconByStatus(node.status_id, 96, node.has_ap, color, opacity);
+                    var pinLatLng = new google.maps.LatLng(node.lat, node.lng);
 
-                        var label = new MapLabel({
-                            text: node.name,
-                            position: pinLatLng,
-                            map: map,
-                            fontSize: 12,
-                            align: 'center',
-                        });
+                    var label = new MapLabel({
+                        text: node.name,
+                        position: pinLatLng,
+                        fontSize: 12,
+                        align: 'center',
+                    });
 
-                        var marker = new google.maps.Marker({
-                            position: pinLatLng,
-                            map: map,
-                            title: node.name,
-                            icon: {
-                                url: markerIcon['path'],
-                                scaledSize: {
-                                    width: 32,
-                                    height: 32,
-                                },
+                    var marker = new google.maps.Marker({
+                        position: pinLatLng,
+                        title: node.name,
+                        icon: {
+                            url: markerIcon['path'],
+                            scaledSize: {
+                                width: 32,
+                                height: 32,
                             },
-                            opacity: markerIcon['opacity'],
-                        });
+                        },
+                        opacity: markerIcon['opacity'],
+                    });
 
-                        // On click, go to Node page
-                        marker.addListener('click', function() {
-                            window.location.href = '/nodes/view/' + node.id;
-                        });
+                    // On click, go to Node page
+                    marker.addListener('click', function() {
+                        window.location.href = '/nodes/view/' + node.id;
+                    });
 
-                        pins.push({
-                            marker: marker,
-                            label: label,
-                            node: node,
-                        });
-                    }
+                    pins.push({
+                        marker: marker,
+                        label: label,
+                        node: node,
+                    });
                 });
 
-                handleZoom(map);
+                handleZoom();
+                handleNodeCheckboxes();
             }
         },
         'json'
@@ -220,7 +226,7 @@ function drawLinks(map)
 }
 
 // Handle map zoom event
-function handleZoom(map) {
+function handleZoom() {
     var pixelSizeAtZoom0 = 1/2;
     var minPixelSize = 16;
     var maxPixelSize = 64;
@@ -255,3 +261,39 @@ function handleZoom(map) {
         }
     });    
 }
+
+function handleNodeCheckboxes() {
+    $.each($('.cb-node'), function(i, cb){
+        var cbStatus = cb.id.substring(8);
+
+        $.each(pins, function(j, pin){
+            if (cbStatus == pin.node.status_id && !pin.node.has_ap) {
+                if ($(cb).prop('checked')) {
+                    pin.marker.setMap(map);
+                }
+                else {
+                    pin.marker.setMap(null);
+                }
+            }
+            else if (cbStatus == 'offline') {
+                if (pin.node.status_id == 0 || pin.node.status_id == 5 || pin.node.status_id == 6) {
+                    if ($(cb).prop('checked')) {
+                        pin.marker.setMap(map);
+                    }
+                    else {
+                        pin.marker.setMap(null);
+                    }
+                }
+            }
+            else if (pin.node.has_ap && pin.node.status_id == 4 && cbStatus == 'ap') {
+                if ($(cb).prop('checked')) {
+                    pin.marker.setMap(map);
+                }
+                else {
+                    pin.marker.setMap(null);
+                }
+            }
+        });
+    });
+}
+
