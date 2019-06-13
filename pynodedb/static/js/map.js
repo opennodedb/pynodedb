@@ -318,8 +318,9 @@ function handleNodeCheckboxes() {
             }
         });
 
-        handleZoom();
     });
+
+    handleZoom();
 }
 
 function handleLinkCheckboxes() {
