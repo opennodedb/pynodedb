@@ -19,7 +19,7 @@
 <h2>{{node.name}}</h2>
 <div class="row">
     <div class="col-sm-6">
-        <table class="table">
+        <table class="table table-node-info" id="node-{{node.id}}-info">
             <tr>
                 <td><b>ID</b></td>
                 <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.id}}</a></td>
@@ -35,10 +35,6 @@
             <tr>
                 <td><b>Status</b></td>
                 <td><a href="{{url_for('nodes.list', filter='status', filter_id=node.status.name)}}">{{node.status.name|title}}</a></td>
-            </tr>
-            <tr>
-                <td><b>Name</b></td>
-                <td><a href="{{url_for('nodes.view', id=node.id)}}">{{node.name}}</a></td>
             </tr>
             <tr>
                 <td><b>Region</b></td>
@@ -71,7 +67,7 @@
         </table>
     </div>
     <div class="col-sm-6">
-        <div id="map" style="height: 444px; width: 100%;"></div>
+        <div id="map" style="height: 402px; width: 100%;"></div>
     </div>
 </div>
 <div class="row">

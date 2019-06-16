@@ -151,9 +151,27 @@ function drawNodes(map)
                         opacity: markerIcon['opacity'],
                     });
 
-                    // On click, go to Node page
+                    // On click,zoom to node and display an info window
                     marker.addListener('click', function() {
-                        window.location.href = '/nodes/view/' + node.id;
+                        var map = marker.getMap();
+                        var position = marker.getPosition();
+
+                        map.setZoom(16);
+                        map.panTo(position);
+
+                        infoContent = $('<div>')
+                            .append(
+                                $('<h3>').text(node.name)
+                            )
+                            .append(
+                                $('<div>').load('/nodes/view/' + node.id + ' table.table-node-info', function() {
+                                    $(this).children('table.table-node-info').addClass('table-condensed');
+
+                                    new google.maps.InfoWindow({
+                                        content: infoContent.html()
+                                    }).open(map, marker);
+                                })
+                            );
                     });
 
                     pins.push({
