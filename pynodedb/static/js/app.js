@@ -13,11 +13,11 @@ function getMarkerIconByStatus(statusId, iconSize = 24, hasAp = false, color = n
             icon['opacity'] = 0.5;
             break;
         case 1:
-            icon['color'] = 'white';
+            icon['color'] = 'silver';
             icon['opacity'] = 0.8;
             break;
         case 2:
-            icon['color'] = 'silver';
+            icon['color'] = 'black';
             icon['opacity'] = 0.8;
             break;
         case 3:
