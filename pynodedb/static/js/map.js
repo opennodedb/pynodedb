@@ -5,11 +5,11 @@ var url = new URL(window.location);
 var params = url.searchParams;
 
 $('.cb-node').change(function() {
-    handleNodeCheckboxes();
+    handleNodeCheckboxes($(this));
 });
 
 $('.cb-link').change(function() {
-    handleLinkCheckboxes();
+    handleLinkCheckboxes($(this));
 });
 
 function initMap()
@@ -275,8 +275,11 @@ function handleZoom() {
     });    
 }
 
-function handleNodeCheckboxes() {
-    $.each($('.cb-node'), function(i, cb){
+function handleNodeCheckboxes(cbs=null) {
+    if (!cbs)
+        cbs = ($('.cb-node'));
+
+    $.each(cbs, function(i, cb){
         var cbStatus = cb.id.substring(8);
 
         $.each(pins, function(j, pin){
@@ -323,8 +326,11 @@ function handleNodeCheckboxes() {
     handleZoom();
 }
 
-function handleLinkCheckboxes() {
-    $.each($('.cb-link'), function(i, cb) {
+function handleLinkCheckboxes(cbs=null) {
+    if (!cbs)
+        cbs = ($('.cb-link'));
+
+    $.each(cbs, function(i, cb) {
         var cbStatus = cb.id.substring(8);
 
         $.each(lines, function(j, line) {
