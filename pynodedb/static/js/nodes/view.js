@@ -42,6 +42,17 @@ function initMap()
     });
 };
 
+// Show Host Modal
+function showHost(id) {
+    $('<div class="modal">').load('/hosts/view/' + id + ' div#content *', function(){
+        $(this).modal({
+            showClose: false
+        });
+    });
+    
+    return true;
+}
+
 // Make table(s) sortable
 $(function() {
     $('.table-sortable').DataTable({

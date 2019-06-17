@@ -134,6 +134,8 @@ def create_app(test_config=None):
     # Register blueprints
     from . import nodes
     app.register_blueprint(nodes.bp)
+    from . import hosts
+    app.register_blueprint(hosts.bp)
     app.register_blueprint(auth.bp)
     from . import api
     app.register_blueprint(api.bp)

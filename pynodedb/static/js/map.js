@@ -156,7 +156,7 @@ function drawNodes(map)
                         var map = marker.getMap();
                         var position = marker.getPosition();
 
-                        map.setZoom(16);
+                        map.setZoom(14);
                         map.panTo(position);
 
                         infoContent = $('<div>')
