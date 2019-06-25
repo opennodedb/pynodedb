@@ -39,3 +39,12 @@ nav.navbar-inverse .navbar-nav>li>a {
 .map-icon-label .map-icon-blue {
     color: blue;
 }
+
+.map-legend {
+    display: block;
+    background: white;
+    margin: 0 10px 0 10px;
+    padding: 0 10px 10px 10px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    opacity: 0.8;
+}

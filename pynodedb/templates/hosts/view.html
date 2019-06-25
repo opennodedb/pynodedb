@@ -1,0 +1,18 @@
+{% extends('layouts/default.html') %}
+
+{% block content %}
+<h2>{{host.fqdn}}</h2>
+<h3>DNS Records</h3>
+<h4>Name (A)</h4>
+<ul>
+    <li>{{host.addr|ipv4address}}</li>
+</ul>
+{% if host.host_aliases %}
+<h4>Aliases (CNAME)</h4>
+<ul>
+    {% for alias in host.host_aliases %}
+    <li>{{alias.name}}.{{host.subnet.nodes[0].name|lower}}.wan</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

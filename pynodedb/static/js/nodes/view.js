@@ -20,12 +20,12 @@ function initMap()
         }
     );
 
-    markerIcon = getMarkerIconByStatus(6, 48);
+    markerIcon = getMarkerIconByStatus(jsdata.node_status, 48, jsdata.has_ap);
     var marker = new google.maps.Marker({
         position: pin,
         map: map,
         icon: markerIcon['path'],
-        opacity: markerIcon['opacity'],
+        opacity: 1,
     });
 
 
@@ -41,6 +41,17 @@ function initMap()
         window.location.href = url;
     });
 };
+
+// Show Host Modal
+function showHost(id) {
+    $('<div class="modal">').load('/hosts/view/' + id + ' div#content *', function(){
+        $(this).modal({
+            showClose: false
+        });
+    });
+    
+    return true;
+}
 
 // Make table(s) sortable
 $(function() {

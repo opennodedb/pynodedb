@@ -71,10 +71,7 @@ class Node(db.Model, SerializerMixin):
 
     # Many to many
     links = db.relationship('LinkNode', back_populates="node", lazy=True)
-    subnets = db.relationship('Subnet', secondary=node_subnet,
-                              lazy='subquery',
-                              backref=db.backref('subnets', lazy=True),
-                              )
+    subnets = db.relationship('Subnet', secondary=node_subnet, back_populates="nodes", lazy=True)
 
     # Psuedo-randomise location of Node
     def privacy_lat(self, user):
@@ -89,6 +86,16 @@ class Node(db.Model, SerializerMixin):
         if user.id == self.user_id or user.in_group(3):
             lng = self.lng
         return lng
+
+    # Determine if this Node has an AP or not
+    @property
+    def has_ap(self):
+        has_ap = False
+        ap_host = Host.query.filter(
+            Host.node_id == self.id, Interface.mode == 'AP').join(Interface).first()
+        if ap_host:
+            has_ap = True
+        return has_ap
 
     def __repr__(self):
         return f'<NodeName {self.name}>'
@@ -241,6 +248,8 @@ class Subnet(db.Model, SerializerMixin):
 
     # Relationships
     hosts = db.relationship('Host', backref='subnet', lazy=True)
+    nodes = db.relationship(
+        'Node', secondary=node_subnet, back_populates="subnets", lazy=True)
 
     def __repr__(self):
         return f'<SubnetAddr {self.addr}/{self.mask}>'

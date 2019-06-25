@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, redirect
 from flask_login import LoginManager, login_required, current_user
+from flask_caching import Cache
 import sqlalchemy
 import ipaddress
 
@@ -8,6 +9,7 @@ from . import functions as f
 from .database import db, User
 from . import auth
 
+cache = Cache()
 login_manager = LoginManager()
 
 
@@ -37,6 +39,8 @@ def create_app(test_config=None):
         USE_SESSION_FOR_NEXT=True,
         GOOGLE_MAPS_API_KEY=None,
         MAP_DEFAULT_CENTRE=None,
+        CACHE_TYPE='simple',
+        CACHE_DEFAULT_TIMEOUT=86400,
     )
 
     # Load config file, if it exists
@@ -86,7 +90,11 @@ def create_app(test_config=None):
     def compass_to_name(value):
         return f.compass_to_name(value)
 
-    # Initialise database
+    # Initialise Caching
+    with app.app_context():
+        cache.init_app(app)
+
+    # Initialise Database
     app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemy.engine.url.URL(
         app.config['DB_DRIVER'],
         host=app.config['DB_HOST'],
@@ -126,6 +134,8 @@ def create_app(test_config=None):
     # Register blueprints
     from . import nodes
     app.register_blueprint(nodes.bp)
+    from . import hosts
+    app.register_blueprint(hosts.bp)
     app.register_blueprint(auth.bp)
     from . import api
     app.register_blueprint(api.bp)
