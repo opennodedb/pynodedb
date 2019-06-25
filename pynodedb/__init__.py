@@ -21,7 +21,7 @@ def create_app(test_config=None):
         SITENAME='pynodedb',
         DB_DRIVER=None,
         DB_HOST=None,
-        DB_POST=None,
+        DB_PORT=None,
         DB_DATABASE=None,
         DB_USERNAME=None,
         DB_PASSWORD=None,
@@ -90,7 +90,7 @@ def create_app(test_config=None):
     app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemy.engine.url.URL(
         app.config['DB_DRIVER'],
         host=app.config['DB_HOST'],
-        port=app.config['DB_POST'],
+        port=app.config['DB_PORT'],
         database=app.config['DB_DATABASE'],
         username=app.config['DB_USERNAME'],
         password=app.config['DB_PASSWORD'],
